@@ -1,0 +1,4364 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AlgoVerse — DAA Learning Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Syne:wght@400;500;600;700;800&family=Manrope:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+  <meta name="description"
+    content="AlgoVerse — A premium guided learning portal for Design and Analysis of Algorithms. Master Big O, Greedy, DP, and more.">
+  <meta name="author" content="Parikshit Kurel">
+  <meta property="og:title" content="AlgoVerse — DAA Learning Portal">
+  <meta property="og:description" content="Step-by-step masterclass in Algorithm Design with interactive checkpoints.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+  <style>
+    :root {
+      --bg: #080c14;
+      --bg2: #0d1220;
+      --bg3: #111827;
+      --surface: #141d2e;
+      --surface2: #1a2540;
+      --border: #1e2d4a;
+      --border2: #243358;
+      --accent: #3b82f6;
+      --accent2: #60a5fa;
+      --accent3: #93c5fd;
+      --cyan: #06b6d4;
+      --green: #10b981;
+      --yellow: #f59e0b;
+      --red: #ef4444;
+      --purple: #8b5cf6;
+      --text: #e2e8f0;
+      --text2: #94a3b8;
+      --text3: #64748b;
+      --font-display: 'Syne', sans-serif;
+      --font-body: 'Manrope', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --nav-h: 64px;
+      --sidebar-w: 280px;
+      --radius: 10px;
+      --shadow: 0 4px 32px rgba(0, 0, 0, 0.4);
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 15px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* SCROLLBAR */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg2);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border2);
+      border-radius: 4px;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: var(--nav-h);
+      background: rgba(8, 12, 20, 0.92);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      z-index: 100;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--text);
+      text-decoration: none;
+      letter-spacing: -0.5px;
+    }
+
+    .nav-brand-icon {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, var(--accent), var(--cyan));
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    .nav-badge {
+      background: linear-gradient(135deg, var(--accent), var(--purple));
+      color: white;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 20px;
+      letter-spacing: 0.5px;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .nav-search {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 7px 14px;
+      border-radius: 8px;
+      font-family: var(--font-body);
+      font-size: 13px;
+      width: 200px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .nav-search:focus {
+      border-color: var(--accent);
+    }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 4px;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--text2);
+      border-radius: 2px;
+      transition: 0.3s;
+    }
+
+    /* LAYOUT */
+    .layout {
+      display: flex;
+      padding-top: var(--nav-h);
+      min-height: 100vh;
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      position: fixed;
+      top: var(--nav-h);
+      left: 0;
+      width: var(--sidebar-w);
+      height: calc(100vh - var(--nav-h));
+      background: var(--bg2);
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
+      overflow-x: hidden;
+      transition: transform 0.3s ease;
+      z-index: 90;
+    }
+
+    .sidebar-inner {
+      padding: 20px 0 40px;
+    }
+
+    .sidebar-header {
+      padding: 12px 20px 8px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      color: var(--text3);
+      text-transform: uppercase;
+    }
+
+    .sidebar-module {
+      margin-bottom: 4px;
+    }
+
+    .sidebar-module-btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 20px;
+      background: none;
+      border: none;
+      color: var(--text2);
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.2s;
+      border-left: 3px solid transparent;
+    }
+
+    .sidebar-module-btn:hover {
+      color: var(--text);
+      background: var(--surface);
+    }
+
+    .sidebar-module-btn.active {
+      color: var(--accent2);
+      border-left-color: var(--accent);
+      background: rgba(59, 130, 246, 0.07);
+    }
+
+    .module-arrow {
+      transition: transform 0.2s;
+      font-size: 11px;
+    }
+
+    .module-arrow.open {
+      transform: rotate(90deg);
+    }
+
+    .sidebar-topics {
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height 0.3s ease;
+    }
+
+    .sidebar-topics.open {
+      max-height: 1000px;
+    }
+
+    .sidebar-topic {
+      display: block;
+      padding: 7px 20px 7px 36px;
+      color: var(--text3);
+      font-size: 12.5px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+      border-left: 3px solid transparent;
+      text-decoration: none;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .sidebar-topic:hover {
+      color: var(--text);
+      background: var(--surface);
+    }
+
+    .sidebar-topic.active {
+      color: var(--accent2);
+      background: rgba(59, 130, 246, 0.1);
+      border-left-color: var(--accent);
+    }
+
+    .creator-tag {
+      margin-top: auto;
+      padding: 24px 20px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .creator-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--text3);
+      font-weight: 700;
+    }
+
+    .creator-name {
+      font-family: var(--font-display);
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.2s;
+    }
+
+    .creator-tag:hover .creator-name {
+      color: var(--accent2);
+    }
+
+    /* MAIN */
+    main {
+      margin-left: var(--sidebar-w);
+      flex: 1;
+      min-height: calc(100vh - var(--nav-h));
+    }
+
+    .content-area {
+      padding: 40px 48px 80px;
+    }
+
+    /* HOME PAGE */
+    .hero {
+      min-height: calc(100vh - var(--nav-h));
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 60px 48px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -200px;
+      right: -200px;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(59, 130, 246, 0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -100px;
+      left: 10%;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(6, 182, 212, 0.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(59, 130, 246, 0.1);
+      border: 1px solid rgba(59, 130, 246, 0.25);
+      color: var(--accent2);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      margin-bottom: 28px;
+      width: fit-content;
+    }
+
+    .hero-tag-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--cyan);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.4;
+      }
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(42px, 6vw, 72px);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -2px;
+      margin-bottom: 24px;
+    }
+
+    .hero-title span {
+      background: linear-gradient(135deg, var(--accent), var(--cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      font-size: 17px;
+      color: var(--text2);
+      max-width: 600px;
+      line-height: 1.7;
+      margin-bottom: 40px;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 60px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), #2563eb);
+      color: white;
+      padding: 12px 28px;
+      border-radius: var(--radius);
+      font-weight: 600;
+      font-size: 14px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
+      font-family: var(--font-body);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 28px rgba(59, 130, 246, 0.45);
+    }
+
+    .btn-secondary {
+      background: var(--surface);
+      color: var(--text);
+      padding: 12px 28px;
+      border-radius: var(--radius);
+      font-weight: 600;
+      font-size: 14px;
+      border: 1px solid var(--border2);
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: var(--font-body);
+    }
+
+    .btn-secondary:hover {
+      background: var(--surface2);
+      border-color: var(--accent);
+    }
+
+    .stats-row {
+      display: flex;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+
+    .stat {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .stat-num {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--accent2), var(--cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--text3);
+      font-weight: 500;
+      margin-top: 2px;
+    }
+
+    /* MODULE CARDS */
+    .modules-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+      margin-top: 0;
+      padding: 40px 48px;
+    }
+
+    .module-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px;
+      cursor: pointer;
+      transition: all 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .module-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, transparent, rgba(59, 130, 246, 0.04));
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .module-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-3px);
+      box-shadow: var(--shadow);
+    }
+
+    .module-card:hover::before {
+      opacity: 1;
+    }
+
+    .module-card-num {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--accent);
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+    }
+
+    .module-card-title {
+      font-family: var(--font-display);
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+
+    .module-card-desc {
+      font-size: 13px;
+      color: var(--text2);
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+
+    .module-card-topics {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .topic-chip {
+      background: rgba(59, 130, 246, 0.1);
+      color: var(--accent2);
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    .module-card-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      margin-bottom: 16px;
+    }
+
+    /* SECTION HEADER */
+    .section-header {
+      margin-bottom: 32px;
+    }
+
+    .section-eyebrow {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 4vw, 42px);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -1px;
+    }
+
+    .section-sub {
+      color: var(--text2);
+      margin-top: 10px;
+      font-size: 15px;
+    }
+
+    /* TOPIC PAGE */
+    .topic-page {}
+
+    .topic-hero {
+      padding: 48px 0 36px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 40px;
+    }
+
+    .topic-breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--text3);
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .topic-breadcrumb a,
+    .topic-breadcrumb span {
+      cursor: pointer;
+      transition: color 0.15s;
+    }
+
+    .topic-breadcrumb a:hover {
+      color: var(--accent2);
+    }
+
+    .topic-breadcrumb .sep {
+      color: var(--border2);
+    }
+
+    .topic-title {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 5vw, 48px);
+      font-weight: 800;
+      letter-spacing: -1.5px;
+      line-height: 1.1;
+      margin-bottom: 14px;
+    }
+
+    .topic-subtitle {
+      font-size: 16px;
+      color: var(--text2);
+      max-width: 700px;
+    }
+
+    .topic-meta {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+
+    .meta-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .meta-badge.time {
+      background: rgba(251, 191, 36, 0.12);
+      color: #fbbf24;
+      border: 1px solid rgba(251, 191, 36, 0.2);
+    }
+
+    .meta-badge.space {
+      background: rgba(16, 185, 129, 0.12);
+      color: #10b981;
+      border: 1px solid rgba(16, 185, 129, 0.2);
+    }
+
+    .meta-badge.type {
+      background: rgba(139, 92, 246, 0.12);
+      color: #8b5cf6;
+      border: 1px solid rgba(139, 92, 246, 0.2);
+    }
+
+    /* CONTENT SECTIONS */
+    .content-sections {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    .content-section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+
+    .section-toggle {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 24px;
+      background: none;
+      border: none;
+      color: var(--text);
+      font-family: var(--font-body);
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .section-toggle:hover {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .section-toggle-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-toggle-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      flex-shrink: 0;
+    }
+
+    .section-toggle-title {
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+    .section-toggle-arrow {
+      color: var(--text3);
+      font-size: 12px;
+      transition: transform 0.2s;
+    }
+
+    .section-toggle-arrow.open {
+      transform: rotate(90deg);
+    }
+
+    .section-content {
+      padding: 0 24px 24px;
+      display: none;
+    }
+
+    .section-content.open {
+      display: block;
+    }
+
+    .section-content p {
+      color: var(--text2);
+      line-height: 1.75;
+      margin-bottom: 12px;
+    }
+
+    .section-content ul,
+    .section-content ol {
+      padding-left: 20px;
+      color: var(--text2);
+      line-height: 1.8;
+    }
+
+    .section-content li {
+      margin-bottom: 6px;
+    }
+
+    .section-content strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    /* CODE BLOCK */
+    .code-block-wrap {
+      position: relative;
+      margin: 16px 0;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--border2);
+    }
+
+    .code-block-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 9px 16px;
+      background: var(--bg3);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .code-lang {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text3);
+      font-weight: 500;
+    }
+
+    .code-copy {
+      background: var(--surface2);
+      border: none;
+      color: var(--text2);
+      padding: 4px 10px;
+      border-radius: 5px;
+      font-size: 11px;
+      cursor: pointer;
+      font-family: var(--font-body);
+      transition: all 0.15s;
+    }
+
+    .code-copy:hover {
+      color: var(--text);
+      background: var(--border2);
+    }
+
+    .code-block-wrap pre {
+      margin: 0 !important;
+      border-radius: 0 !important;
+      background: var(--bg2) !important;
+      padding: 20px !important;
+      overflow-x: auto;
+      font-family: var(--font-mono) !important;
+      font-size: 13px !important;
+      line-height: 1.7 !important;
+    }
+
+    .code-block-wrap code {
+      font-family: var(--font-mono) !important;
+    }
+
+    /* COMPLEXITY TABLE */
+    .complexity-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+      font-size: 13px;
+    }
+
+    .complexity-table th {
+      background: var(--bg3);
+      color: var(--text);
+      padding: 10px 16px;
+      text-align: left;
+      font-weight: 600;
+      border: 1px solid var(--border);
+      font-size: 12px;
+      letter-spacing: 0.5px;
+    }
+
+    .complexity-table td {
+      padding: 10px 16px;
+      border: 1px solid var(--border);
+      color: var(--text2);
+    }
+
+    .complexity-table tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .c-best {
+      color: #10b981;
+      font-family: var(--font-mono);
+      font-weight: 600;
+    }
+
+    .c-avg {
+      color: #f59e0b;
+      font-family: var(--font-mono);
+      font-weight: 600;
+    }
+
+    .c-worst {
+      color: #ef4444;
+      font-family: var(--font-mono);
+      font-weight: 600;
+    }
+
+    .c-space {
+      color: #8b5cf6;
+      font-family: var(--font-mono);
+      font-weight: 600;
+    }
+
+    /* DRY RUN */
+    .dryrun-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .dryrun-step {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      padding: 14px;
+      background: var(--bg2);
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+
+    .step-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--cyan));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      color: white;
+      flex-shrink: 0;
+    }
+
+    .step-content {
+      flex: 1;
+    }
+
+    .step-label {
+      font-weight: 600;
+      font-size: 13px;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .step-desc {
+      font-size: 13px;
+      color: var(--text2);
+    }
+
+    .step-arr {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      background: var(--bg);
+      padding: 4px 10px;
+      border-radius: 5px;
+      border: 1px solid var(--border);
+      display: inline-block;
+      margin-top: 6px;
+      color: var(--cyan);
+    }
+
+    /* CALLOUTS */
+    .callout {
+      padding: 14px 18px;
+      border-radius: 10px;
+      margin: 12px 0;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .callout-info {
+      background: rgba(59, 130, 246, 0.08);
+      border: 1px solid rgba(59, 130, 246, 0.2);
+    }
+
+    .callout-tip {
+      background: rgba(16, 185, 129, 0.08);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+    }
+
+    .callout-warn {
+      background: rgba(245, 158, 11, 0.08);
+      border: 1px solid rgba(245, 158, 11, 0.2);
+    }
+
+    .callout-icon {
+      font-size: 16px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .callout p {
+      margin: 0;
+      font-size: 13.5px;
+      color: var(--text2);
+    }
+
+    .callout strong {
+      color: var(--text);
+    }
+
+    /* COMPARISON GRID */
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin: 12px 0;
+    }
+
+    @media(max-width:640px) {
+      .comparison-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .comparison-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+    }
+
+    .comparison-card-title {
+      font-weight: 700;
+      font-size: 13px;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+
+    .comparison-card ul {
+      padding-left: 16px;
+      margin: 0;
+    }
+
+    .comparison-card li {
+      font-size: 13px;
+      color: var(--text2);
+      margin-bottom: 5px;
+    }
+
+    /* USE CASE TAGS */
+    .use-cases {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 12px 0;
+    }
+
+    .use-case {
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--green);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .not-use-case {
+      background: rgba(239, 68, 68, 0.1);
+      color: #f87171;
+      border: 1px solid rgba(239, 68, 68, 0.2);
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    /* VISUALIZER PLACEHOLDER */
+    .viz-placeholder {
+      background: var(--bg2);
+      border: 2px dashed var(--border2);
+      border-radius: 12px;
+      padding: 48px;
+      text-align: center;
+      margin: 16px 0;
+    }
+
+    .viz-placeholder-icon {
+      font-size: 40px;
+      margin-bottom: 12px;
+    }
+
+    .viz-placeholder-title {
+      font-weight: 700;
+      font-size: 16px;
+      color: var(--text2);
+      margin-bottom: 6px;
+    }
+
+    .viz-placeholder-sub {
+      font-size: 13px;
+      color: var(--text3);
+    }
+
+    .viz-placeholder-btn {
+      margin-top: 16px;
+      background: var(--surface2);
+      border: 1px solid var(--border2);
+      color: var(--text2);
+      padding: 8px 18px;
+      border-radius: 8px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.15s;
+      font-family: var(--font-body);
+    }
+
+    .viz-placeholder-btn:hover {
+      color: var(--accent2);
+      border-color: var(--accent);
+    }
+
+    /* QUIZ PLACEHOLDER */
+    .quiz-placeholder {
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.08), rgba(59, 130, 246, 0.08));
+      border: 1px solid rgba(139, 92, 246, 0.2);
+      border-radius: 12px;
+      padding: 32px;
+      text-align: center;
+      margin: 16px 0;
+    }
+
+    .quiz-placeholder-title {
+      font-weight: 700;
+      font-size: 17px;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .quiz-placeholder-sub {
+      font-size: 13px;
+      color: var(--text2);
+      margin-bottom: 16px;
+    }
+
+    /* PRACTICE PLACEHOLDER */
+    .practice-placeholder {
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.08), rgba(16, 185, 129, 0.08));
+      border: 1px solid rgba(6, 182, 212, 0.2);
+      border-radius: 12px;
+      padding: 32px;
+      text-align: center;
+      margin: 16px 0;
+    }
+
+    /* PROGRESS BAR */
+    .progress-section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin-bottom: 24px;
+    }
+
+    .progress-title {
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: 12px;
+      color: var(--text2);
+    }
+
+    .progress-bar-wrap {
+      background: var(--bg2);
+      border-radius: 20px;
+      height: 6px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      border-radius: 20px;
+      background: linear-gradient(90deg, var(--accent), var(--cyan));
+      transition: width 0.6s ease;
+    }
+
+    .progress-stats {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 8px;
+      font-size: 12px;
+      color: var(--text3);
+    }
+
+    /* NEW LEARNING UI COMPONENTS */
+    .learning-objectives {
+      background: rgba(59, 130, 246, 0.05);
+      border-left: 4px solid var(--accent);
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 30px;
+    }
+
+    .learning-objectives-title {
+      color: var(--accent2);
+      font-weight: 700;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .learning-objectives ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    @media (max-width: 640px) {
+      .learning-objectives ul {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .learning-objectives li {
+      font-size: 14px;
+      color: var(--text2);
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .learning-objectives li::before {
+      content: "🎯";
+      font-size: 12px;
+    }
+
+    .takeaways-box {
+      background: linear-gradient(135deg, rgba(8, 12, 20, 0.6), rgba(20, 29, 46, 0.8));
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      margin: 40px 0;
+      position: relative;
+    }
+
+    .takeaways-title {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: var(--text);
+    }
+
+    .takeaway-item {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 12px;
+      color: var(--text2);
+      font-size: 14px;
+    }
+
+    .takeaway-icon {
+      color: var(--green);
+      font-weight: 700;
+    }
+
+    .checkpoint-card {
+      background: var(--bg2);
+      border: 1px solid var(--accent);
+      border-radius: 16px;
+      padding: 32px;
+      margin-top: 40px;
+      box-shadow: 0 10px 40px rgba(59, 130, 246, 0.1);
+    }
+
+    .checkpoint-header {
+      margin-bottom: 24px;
+    }
+
+    .checkpoint-badge {
+      background: var(--accent);
+      color: white;
+      padding: 4px 12px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .checkpoint-title {
+      margin-top: 8px;
+      font-family: var(--font-display);
+      font-size: 22px;
+    }
+
+    .quiz-opt {
+      display: block;
+      width: 100%;
+      padding: 16px 20px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-bottom: 12px;
+      font-family: var(--font-body);
+    }
+
+    .quiz-opt:hover:not(:disabled) {
+      border-color: var(--accent);
+      background: var(--surface2);
+    }
+
+    .quiz-opt.correct {
+      border-color: var(--green);
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--green);
+    }
+
+    .quiz-opt.wrong {
+      border-color: var(--red);
+      background: rgba(239, 68, 68, 0.1);
+      color: var(--red);
+    }
+
+    .quiz-opt:disabled {
+      cursor: default;
+    }
+
+    .next-action-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 0;
+      margin-top: 40px;
+      border-top: 1px solid var(--border);
+    }
+
+    .lesson-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .status-unlocked {
+      color: var(--green);
+    }
+
+    .status-locked {
+      color: var(--text3);
+    }
+
+    /* SIDEBAR ENHANCEMENTS */
+    .sidebar-topic.locked {
+      opacity: 0.5;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    .sidebar-topic .status-icon {
+      margin-right: 8px;
+    }
+
+    .sidebar-topic .check {
+      color: var(--green);
+    }
+
+    .sidebar-topic .lock {
+      color: var(--text3);
+      font-size: 10px;
+    }
+
+    /* HOME PROGRESS */
+    .home-continue-card {
+      background: linear-gradient(135deg, var(--surface), var(--bg2));
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 30px;
+      margin: 40px 48px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .home-continue-card::after {
+      content: '⚡';
+      position: absolute;
+      right: -20px;
+      bottom: -20px;
+      font-size: 120px;
+      opacity: 0.03;
+      transform: rotate(-15deg);
+    }
+
+    .home-continue-info {
+      flex: 1;
+    }
+
+    .home-continue-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent2);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+
+    .home-continue-title {
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    /* MODES */
+    .settings-bar {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 12px 24px;
+      background: var(--bg2);
+      border-bottom: 1px solid var(--border);
+      font-size: 12px;
+    }
+
+    .toggle-switch {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .switch {
+      width: 36px;
+      height: 18px;
+      background: var(--border2);
+      border-radius: 20px;
+      position: relative;
+      transition: 0.3s;
+    }
+
+    .switch::after {
+      content: '';
+      position: absolute;
+      left: 2px;
+      top: 2px;
+      width: 14px;
+      height: 14px;
+      background: white;
+      border-radius: 50%;
+      transition: 0.3s;
+    }
+
+    .toggle-active .switch {
+      background: var(--accent);
+    }
+
+    .toggle-active .switch::after {
+      left: 20px;
+    }
+
+    /* CELEBRATION */
+    @keyframes celebrate {
+      0% {
+        transform: scale(0);
+        opacity: 0;
+      }
+
+      50% {
+        transform: scale(1.2);
+        opacity: 1;
+      }
+
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .celebration {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      background: rgba(8, 12, 20, 0.8);
+      backdrop-filter: blur(8px);
+      display: none;
+    }
+
+    .celebration-content {
+      text-align: center;
+      animation: celebrate 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+    }
+
+    .celebration-icon {
+      font-size: 80px;
+      margin-bottom: 20px;
+    }
+
+    .celebration-title {
+      font-family: var(--font-display);
+      font-size: 42px;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    /* TOAST */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--surface2);
+      border: 1px solid var(--border2);
+      color: var(--text);
+      padding: 12px 18px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 500;
+      box-shadow: var(--shadow);
+      z-index: 999;
+      transform: translateY(60px);
+      opacity: 0;
+      transition: all 0.3s;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* FOOTER */
+    .footer-bar {
+      margin-left: var(--sidebar-w);
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      padding: 20px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--text3);
+    }
+
+    /* RESPONSIVE */
+    @media(max-width:1024px) {
+      .sidebar {
+        transform: translateX(-100%);
+      }
+
+      .sidebar.mobile-open {
+        transform: translateX(0);
+      }
+
+      main,
+      .footer-bar {
+        margin-left: 0 !important;
+      }
+
+      .hamburger {
+        display: flex;
+      }
+
+      .content-area {
+        padding: 28px 20px 60px;
+      }
+
+      .hero {
+        padding: 40px 20px;
+      }
+
+      .modules-grid {
+        padding: 28px 20px;
+      }
+    }
+
+    @media(max-width:640px) {
+      .hero-title {
+        font-size: 32px;
+      }
+
+      .stats-row {
+        gap: 20px;
+      }
+
+      .topic-meta {
+        gap: 8px;
+      }
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .fade-in-up {
+      animation: fadeInUp 0.5s ease both;
+    }
+
+    .delay-1 {
+      animation-delay: 0.1s;
+    }
+
+    .delay-2 {
+      animation-delay: 0.2s;
+    }
+
+    .delay-3 {
+      animation-delay: 0.3s;
+    }
+
+    .delay-4 {
+      animation-delay: 0.4s;
+    }
+
+    /* SIDEBAR OVERLAY */
+    .sidebar-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 89;
+    }
+
+    .sidebar-overlay.show {
+      display: block;
+    }
+
+    /* INLINE NOTATION */
+    .notation {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      background: rgba(59, 130, 246, 0.1);
+      color: var(--accent2);
+      padding: 1px 6px;
+      border-radius: 4px;
+    }
+
+    /* HIGHLIGHT BOX */
+    .highlight-box {
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.06), rgba(6, 182, 212, 0.06));
+      border: 1px solid rgba(59, 130, 246, 0.2);
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin: 14px 0;
+    }
+
+    .highlight-box-title {
+      font-weight: 700;
+      font-size: 13px;
+      color: var(--accent2);
+      margin-bottom: 8px;
+    }
+
+    .highlight-box p {
+      font-size: 13.5px;
+      color: var(--text2);
+      margin: 0;
+    }
+
+    /* DIVIDER */
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 20px 0;
+    }
+
+    /* GRID 2-COL */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    @media(max-width:640px) {
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .info-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+    }
+
+    .info-card-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--text3);
+      margin-bottom: 8px;
+    }
+
+    .info-card-value {
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--text);
+    }
+
+    .info-card-sub {
+      font-size: 12px;
+      color: var(--text2);
+      margin-top: 4px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+  <nav>
+    <a class="nav-brand" href="#" onclick="showHome(); return false;">
+      <div class="nav-brand-icon">⚡</div>
+      AlgoVerse
+      <span class="nav-badge">DAA</span>
+    </a>
+    <div class="nav-right">
+      <input type="text" class="nav-search" placeholder="Search topics..." id="searchInput"
+        oninput="handleSearch(this.value)">
+      <button class="hamburger" onclick="toggleSidebar()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="layout">
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-inner">
+        <div class="sidebar-header">Course Modules</div>
+
+        <!-- Module 1 -->
+        <div class="sidebar-module">
+          <button class="sidebar-module-btn" onclick="toggleModule('m1')">
+            <span>📊 Module 1: Performance Analysis</span>
+            <span class="module-arrow" id="arrow-m1">▶</span>
+          </button>
+          <div class="sidebar-topics" id="m1">
+            <a class="sidebar-topic" onclick="showTopic('algo-features')">Features of an Algorithm</a>
+            <a class="sidebar-topic" onclick="showTopic('pseudocode')">Pseudocode Conventions</a>
+            <a class="sidebar-topic" onclick="showTopic('time-complexity')">Time Complexity</a>
+            <a class="sidebar-topic" onclick="showTopic('space-complexity')">Space Complexity</a>
+            <a class="sidebar-topic" onclick="showTopic('asymptotic')">Asymptotic Notations</a>
+            <a class="sidebar-topic" onclick="showTopic('cases')">Best / Average / Worst Case</a>
+            <a class="sidebar-topic" onclick="showTopic('insertion-sort')">Insertion Sort</a>
+            <a class="sidebar-topic" onclick="showTopic('bubble-sort')">Bubble Sort</a>
+            <a class="sidebar-topic" onclick="showTopic('selection-sort')">Selection Sort</a>
+          </div>
+        </div>
+
+        <!-- Module 2 -->
+        <div class="sidebar-module">
+          <button class="sidebar-module-btn" onclick="toggleModule('m2')">
+            <span>🔀 Module 2: Divide & Conquer</span>
+            <span class="module-arrow" id="arrow-m2">▶</span>
+          </button>
+          <div class="sidebar-topics" id="m2">
+            <a class="sidebar-topic" onclick="showTopic('dc-general')">General D&C Method</a>
+            <a class="sidebar-topic" onclick="showTopic('binary-search')">Binary Search</a>
+            <a class="sidebar-topic" onclick="showTopic('max-min')">Finding Max & Min</a>
+            <a class="sidebar-topic" onclick="showTopic('merge-sort')">Merge Sort</a>
+            <a class="sidebar-topic" onclick="showTopic('quick-sort')">Quick Sort</a>
+          </div>
+        </div>
+
+        <!-- Module 3 -->
+        <div class="sidebar-module">
+          <button class="sidebar-module-btn" onclick="toggleModule('m3')">
+            <span>🌿 Module 3: Greedy Method</span>
+            <span class="module-arrow" id="arrow-m3">▶</span>
+          </button>
+          <div class="sidebar-topics" id="m3">
+            <a class="sidebar-topic" onclick="showTopic('greedy-general')">Greedy Strategy</a>
+            <a class="sidebar-topic" onclick="showTopic('container-loading')">Container Loading</a>
+            <a class="sidebar-topic" onclick="showTopic('dijkstra')">Single Source Shortest Path</a>
+            <a class="sidebar-topic" onclick="showTopic('fractional-knapsack')">Fractional Knapsack</a>
+            <a class="sidebar-topic" onclick="showTopic('job-sequencing')">Job Sequencing</a>
+          </div>
+        </div>
+
+        <!-- Module 4 -->
+        <div class="sidebar-module">
+          <button class="sidebar-module-btn" onclick="toggleModule('m4')">
+            <span>🧬 Module 4: Dynamic Programming</span>
+            <span class="module-arrow" id="arrow-m4">▶</span>
+          </button>
+          <div class="sidebar-topics" id="m4">
+            <a class="sidebar-topic" onclick="showTopic('dp-general')">DP General Method</a>
+            <a class="sidebar-topic" onclick="showTopic('01-knapsack')">0/1 Knapsack</a>
+            <a class="sidebar-topic" onclick="showTopic('fibonacci')">Fibonacci (DP)</a>
+            <a class="sidebar-topic" onclick="showTopic('dp-shortest-path')">Shortest Path (DP)</a>
+            <a class="sidebar-topic" onclick="showTopic('tsp')">Travelling Salesman</a>
+            <a class="sidebar-topic" onclick="showTopic('np-hard')">NP-Hard Concepts</a>
+          </div>
+        </div>
+
+        <div style="height:1px;background:var(--border);margin:16px 20px;"></div>
+        <div class="sidebar-header">Resources</div>
+        <a class="sidebar-topic" onclick="showTopic('complexity-cheatsheet')" style="padding-left:20px">📋 Complexity
+          Cheatsheet</a>
+        <a class="sidebar-topic" onclick="showTopic('quiz')" style="padding-left:20px">🧪 Practice Quiz</a>
+        <a class="sidebar-topic" onclick="showTopic('problems')" style="padding-left:20px">💡 Practice Problems</a>
+
+        <div class="creator-tag">
+          <div class="creator-label">Lead Developer</div>
+          <div class="creator-name">
+            <span>Parikshit Kurel</span>
+            <span style="font-size:12px;opacity:0.6;">⚡</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+    <!-- MAIN CONTENT -->
+    <main id="main">
+      <div id="page-content"></div>
+    </main>
+  </div>
+
+  <div class="footer-bar" id="footer-bar">
+    <span>AlgoVerse &copy; 2025 · Designed by Parikshit Kurel</span>
+    <span>Analysis & Design of Algorithms · University Course</span>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // ============================================================
+    // DATA: All topic content
+    // ============================================================
+    const TOPICS = {
+
+      'algo-features': {
+        title: 'Features of a General Algorithm',
+        subtitle: 'Understanding what makes an algorithm valid and useful',
+        module: 'Module 1: Performance Analysis',
+        time: 'N/A', space: 'N/A', type: 'Fundamentals',
+        sections: [
+          {
+            icon: '💡', color: '#3b82f6', title: 'Intuition',
+            content: `An algorithm is like a cooking recipe — it gives you a precise step-by-step procedure to achieve a desired output from a given input. For a recipe to be valid, it must be unambiguous, have a starting point, eventually produce a dish, and use a finite amount of ingredients and steps.`
+          },
+          {
+            icon: '📖', color: '#8b5cf6', title: 'Formal Definition',
+            content: `An algorithm is a <strong>well-defined computational procedure</strong> that takes some input, performs a sequence of steps, and produces an output. Every algorithm must satisfy five essential properties.`
+          },
+          {
+            icon: '🔢', color: '#10b981', title: 'Five Essential Features',
+            content: `<strong>1. Input:</strong> An algorithm has zero or more inputs, clearly defined from a specific set.<br><br>
+<strong>2. Output:</strong> It produces at least one output — the answer to the problem.<br><br>
+<strong>3. Definiteness:</strong> Every instruction must be <em>clear and unambiguous</em>. "Sort of add 5" is not definite.<br><br>
+<strong>4. Finiteness:</strong> The algorithm <em>must terminate</em> after a finite number of steps. An infinite loop is not an algorithm.<br><br>
+<strong>5. Effectiveness:</strong> Each step must be <em>basic enough to be performed</em> — executable by a human with pen and paper in finite time.`
+          },
+          {
+            icon: '📊', color: '#f59e0b', title: 'Additional Desirable Properties',
+            content: `Beyond the five core features, good algorithms also have:<br><br>
+<strong>Correctness:</strong> Produces the right answer for all valid inputs.<br>
+<strong>Simplicity:</strong> Easy to understand and implement.<br>
+<strong>Efficiency:</strong> Uses minimal time and memory resources.<br>
+<strong>Generality:</strong> Works on a wide range of inputs, not just specific cases.<br>
+<strong>Optimality:</strong> Uses the best possible resources for the given problem class.`
+          },
+          {
+            icon: '⚡', color: '#06b6d4', title: 'When to Use',
+            content: `This is foundational knowledge. Before writing any algorithm, verify it satisfies all five properties. Use this checklist during algorithm design, peer review, and when evaluating whether a proposed solution is truly an algorithm.`
+          }
+        ]
+      },
+
+      'pseudocode': {
+        title: 'Pseudocode Conventions',
+        subtitle: 'The language-independent way to express algorithms',
+        module: 'Module 1: Performance Analysis',
+        time: 'N/A', space: 'N/A', type: 'Fundamentals',
+        sections: [
+          {
+            icon: '💡', color: '#3b82f6', title: 'Intuition',
+            content: `Pseudocode is like writing an algorithm in plain English with some mathematical structure. It bridges the gap between human thinking and actual code. It's not tied to any language — you can turn it into Python, C++, or Java without misunderstanding.`
+          },
+          {
+            icon: '📋', color: '#8b5cf6', title: 'Standard Conventions',
+            content: `<strong>Structure:</strong> Algorithms start with a name and parameters.<br><br>
+<strong>Assignment:</strong> Use ← for assignment: <code>x ← 5</code><br><br>
+<strong>Comparisons:</strong> Use =, ≠, <, >, ≤, ≥<br><br>
+<strong>Control Flow:</strong> <code>if/then/else/end if</code>, <code>while do end while</code>, <code>for to do end for</code><br><br>
+<strong>Arrays:</strong> 1-indexed: A[1..n], access as A[i]<br><br>
+<strong>Comments:</strong> Use // or /* ... */ for explanations<br><br>
+<strong>Functions:</strong> <code>return</code> to output results`
+          },
+          {
+            icon: '💻', color: '#10b981', title: 'Pseudocode Example — Linear Search',
+            code: `Algorithm LinearSearch(A, n, key)
+// Input: Array A of n elements, search key
+// Output: Index of key in A, or -1 if not found
+
+for i ← 1 to n do
+    if A[i] = key then
+        return i
+    end if
+end for
+return -1`
+          },
+          {
+            icon: '💻', color: '#10b981', title: 'Pseudocode Example — Factorial',
+            code: `Algorithm Factorial(n)
+// Input: Non-negative integer n
+// Output: n!
+
+if n = 0 then
+    return 1
+else
+    return n * Factorial(n - 1)
+end if`
+          },
+          {
+            icon: '⚡', color: '#06b6d4', title: 'Why Pseudocode Matters',
+            content: `<strong>Language-independent:</strong> Focus on logic, not syntax.<br>
+<strong>Easy communication:</strong> Team members can understand it regardless of language preference.<br>
+<strong>Quick iteration:</strong> Easier to modify than actual code during design phase.<br>
+<strong>Exam-friendly:</strong> Most DAA problems are expressed in pseudocode.`
+          }
+        ]
+      },
+
+      'time-complexity': {
+        title: 'Time Complexity',
+        subtitle: 'Measuring how runtime scales with input size',
+        module: 'Module 1: Performance Analysis',
+        time: 'Varies', space: 'N/A', type: 'Analysis',
+        sections: [
+          {
+            icon: '💡', color: '#3b82f6', title: 'Intuition',
+            content: `Time complexity tells you: <em>"If I double the input size, how much longer will my program take?"</em><br><br>
+It's not about actual milliseconds (those depend on hardware), but about the <strong>growth rate</strong> of operations as input grows. We count fundamental operations — comparisons, assignments, additions.`
+          },
+          {
+            icon: '📖', color: '#8b5cf6', title: 'Formal Definition',
+            content: `The time complexity T(n) of an algorithm is a function that counts the <strong>number of basic operations</strong> (comparisons, assignments) performed as a function of the input size n.<br><br>
+We analyze:<br>
+• <strong>Worst case:</strong> Maximum operations for any input of size n<br>
+• <strong>Average case:</strong> Expected operations averaged over all inputs<br>
+• <strong>Best case:</strong> Minimum operations (rarely useful alone)`
+          },
+          {
+            icon: '🔢', color: '#10b981', title: 'How to Compute T(n)',
+            content: `<strong>Rule 1 — Simple statements:</strong> Cost = c (constant)<br>
+<strong>Rule 2 — Sequential:</strong> Add costs: T = T₁ + T₂<br>
+<strong>Rule 3 — If-else:</strong> T = max(T_if, T_else)<br>
+<strong>Rule 4 — For loop:</strong> T = iterations × T_body<br>
+<strong>Rule 5 — Nested loops:</strong> Multiply — O(n²), O(n³), etc.<br><br>
+<strong>Example counting for simple loop:</strong><br>
+Sum = 0 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ 1 step<br>
+for i=1 to n → n+1 comparisons<br>
+&nbsp;&nbsp;Sum = Sum+i → n assignments<br>
+Total T(n) = 2n + 2 = <strong>O(n)</strong>`
+          },
+          {
+            icon: '📊', color: '#f59e0b', title: 'Common Complexity Classes',
+            table: {
+              headers: ['Complexity', 'Name', 'Example', 'n=100'],
+              rows: [
+                ['O(1)', 'Constant', 'Array access', '1 op'],
+                ['O(log n)', 'Logarithmic', 'Binary Search', '~7 ops'],
+                ['O(n)', 'Linear', 'Linear Search', '100 ops'],
+                ['O(n log n)', 'Linearithmic', 'Merge Sort', '~700 ops'],
+                ['O(n²)', 'Quadratic', 'Bubble Sort', '10,000 ops'],
+                ['O(n³)', 'Cubic', 'Matrix multiply', '1,000,000 ops'],
+                ['O(2ⁿ)', 'Exponential', 'TSP brute force', '~10³⁰ ops'],
+              ]
+            }
+          },
+          {
+            icon: '💻', color: '#06b6d4', title: 'Code Example — Analyzing Complexity',
+            code: `// O(1) — Constant
+function getFirst(arr):
+    return arr[0]   // 1 operation always
+
+// O(n) — Linear
+function linearSum(arr, n):
+    total ← 0
+    for i ← 1 to n do   // executes n times
+        total ← total + arr[i]
+    end for
+    return total
+
+// O(n²) — Quadratic (nested loops)
+function printPairs(n):
+    for i ← 1 to n do
+        for j ← 1 to n do   // n × n = n² times
+            print(i, j)
+        end for
+    end for`
+          }
+        ]
+      },
+
+      'space-complexity': {
+        title: 'Space Complexity',
+        subtitle: 'Measuring memory usage as a function of input size',
+        module: 'Module 1: Performance Analysis',
+        time: 'N/A', space: 'Varies', type: 'Analysis',
+        sections: [
+          {
+            icon: '💡', color: '#3b82f6', title: 'Intuition',
+            content: `Space complexity answers: <em>"How much memory does this algorithm need as input grows?"</em><br><br>
+Think of it like packing luggage. Some algorithms pack a fixed amount regardless of the trip length (O(1)), while others need more bags as the trip gets longer.`
+          },
+          {
+            icon: '📖', color: '#8b5cf6', title: 'Components of Space',
+            content: `Total space = <strong>Instruction Space</strong> (code itself) + <strong>Data Space</strong> (variables, arrays) + <strong>Stack Space</strong> (function call stack for recursion)<br><br>
+In analysis, we focus on <strong>auxiliary space</strong> — extra space beyond the input. The input itself takes O(n), but we want to know what <em>additional</em> space the algorithm uses.<br><br>
+<strong>In-place algorithm:</strong> Uses O(1) extra space (e.g., Insertion Sort)<br>
+<strong>Out-of-place:</strong> Creates new data structures (e.g., Merge Sort uses O(n) extra)`
+          },
+          {
+            icon: '📊', color: '#10b981', title: 'Space Complexity Examples',
+            table: {
+              headers: ['Algorithm', 'Space', 'Reason'],
+              rows: [
+                ['Iterative Loop', 'O(1)', 'Fixed variables only'],
+                ['Recursive Factorial', 'O(n)', 'n calls on stack'],
+                ['Merge Sort', 'O(n)', 'Auxiliary arrays'],
+                ['Quick Sort', 'O(log n)', 'Recursion depth'],
+                ['Hash Table', 'O(n)', 'n entries stored'],
+                ['DP Matrix (n×n)', 'O(n²)', 'Full 2D table'],
+              ]
+            }
+          },
+          {
+            icon: '💻', color: '#06b6d4', title: 'Space Analysis Examples',
+            code: `// O(1) Space — in-place, no extra structures
+Algorithm ReverseArray(A, n):
+    left ← 1, right ← n
+    while left < right do
+        temp ← A[left]      // only 3 extra vars: O(1)
+        A[left] ← A[right]
+        A[right] ← temp
+        left ← left + 1
+        right ← right - 1
+    end while
+
+// O(n) Space — recursive call stack grows with n
+Algorithm RecursiveSum(n):
+    if n = 0 then return 0
+    return n + RecursiveSum(n-1)  // n frames on stack
+
+// O(n) Auxiliary Space — new array created
+Algorithm MergeSortHelper(A, n):
+    B ← new Array[n]   // O(n) extra space
+    // ... copy and merge into B`
+          },
+          {
+            icon: '⚡', color: '#f59e0b', title: 'Space vs Time Tradeoff',
+            content: `Often we can <strong>trade space for time</strong> (memoization, caching) or <strong>trade time for space</strong> (recomputing instead of storing). Dynamic Programming is the classic example: it uses O(n) or O(n²) space to reduce exponential time to polynomial time.<br><br>
+<strong>Rule of thumb:</strong> In modern systems, time is usually the bigger constraint, so using more memory to speed things up is often worth it.`
+          }
+        ]
+      },
+
+      'asymptotic': {
+        title: 'Asymptotic Notations',
+        subtitle: 'O, Ω, Θ — the language of algorithm analysis',
+        module: 'Module 1: Performance Analysis',
+        time: 'N/A', space: 'N/A', type: 'Analysis',
+        sections: [
+          {
+            icon: '💡', color: '#3b82f6', title: 'Intuition',
+            content: `When comparing algorithms, we don't care about constants (hardware-dependent) or small inputs. We care about behavior as n → ∞. Asymptotic notations let us express this growth behavior cleanly.<br><br>
+Think of it as comparing race car speeds: we say "Car A is O(n)" to mean "it's never more than linearly slower than Car B for large n".`
+          },
+          {
+            icon: '📊', color: '#8b5cf6', title: 'Big-O Notation — O(g(n))',
+            content: `<strong>Definition:</strong> f(n) = O(g(n)) if there exist constants c > 0 and n₀ ≥ 1 such that:<br>
+<code class="notation">f(n) ≤ c × g(n)  for all n ≥ n₀</code><br><br>
+<strong>Meaning:</strong> g(n) is an <strong>upper bound</strong> on f(n). "f grows no faster than g".<br><br>
+<strong>Examples:</strong><br>
+• 3n + 5 = O(n) &nbsp;&nbsp;&nbsp;(c=8, n₀=1)<br>
+• 2n² + 3n = O(n²)<br>
+• log n = O(n)<br>
+• 5 = O(1)<br><br>
+<strong>Used for:</strong> Worst-case analysis`
+          },
+          {
+            icon: '📊', color: '#10b981', title: 'Big-Omega — Ω(g(n))',
+            content: `<strong>Definition:</strong> f(n) = Ω(g(n)) if there exist constants c > 0 and n₀ ≥ 1 such that:<br>
+<code class="notation">f(n) ≥ c × g(n)  for all n ≥ n₀</code><br><br>
+<strong>Meaning:</strong> g(n) is a <strong>lower bound</strong> on f(n). "f grows at least as fast as g".<br><br>
+<strong>Examples:</strong><br>
+• 3n + 5 = Ω(n)<br>
+• n² = Ω(n)<br>
+• n log n = Ω(n)<br><br>
+<strong>Used for:</strong> Best-case analysis, proving optimality`
+          },
+          {
+            icon: '📊', color: '#f59e0b', title: 'Theta — Θ(g(n))',
+            content: `<strong>Definition:</strong> f(n) = Θ(g(n)) if f(n) = O(g(n)) AND f(n) = Ω(g(n)).<br>
+Formally: c₁ × g(n) ≤ f(n) ≤ c₂ × g(n) for all n ≥ n₀<br><br>
+<strong>Meaning:</strong> <strong>Tight bound</strong> — f and g grow at exactly the same rate.<br><br>
+<strong>Examples:</strong><br>
+• 2n² + 3n + 1 = Θ(n²)<br>
+• n/2 = Θ(n)<br><br>
+<strong>Used for:</strong> Precise average-case analysis`
+          },
+          {
+            icon: '🔢', color: '#06b6d4', title: 'Notation Comparison',
+            table: {
+              headers: ['Notation', 'Bound Type', 'Analogy', 'Use Case'],
+              rows: [
+                ['O(g(n))', 'Upper Bound', 'f ≤ g (≤)', 'Worst case'],
+                ['Ω(g(n))', 'Lower Bound', 'f ≥ g (≥)', 'Best case / Lower bound proofs'],
+                ['Θ(g(n))', 'Tight Bound', 'f = g (=)', 'Exact asymptotic behavior'],
+                ['o(g(n))', 'Strict Upper', 'f < g (<)', 'Strictly slower growth'],
+                ['ω(g(n))', 'Strict Lower', 'f > g (>)', 'Strictly faster growth'],
+              ]
+            }
+          },
+          {
+            icon: '📋', color: '#ef4444', title: 'Key Properties & Rules',
+            content: `<strong>1. Drop constants:</strong> O(2n) = O(n), O(100) = O(1)<br>
+<strong>2. Drop lower-order terms:</strong> O(n² + n) = O(n²)<br>
+<strong>3. Transitivity:</strong> If f=O(g) and g=O(h), then f=O(h)<br>
+<strong>4. Sum rule:</strong> O(f) + O(g) = O(max(f,g))<br>
+<strong>5. Product rule:</strong> O(f) × O(g) = O(f×g)<br><br>
+<strong>Growth hierarchy (slowest to fastest):</strong><br>
+O(1) < O(log n) < O(√n) < O(n) < O(n log n) < O(n²) < O(n³) < O(2ⁿ) < O(n!)`
+          }
+        ]
+      },
+
+      'cases': {
+        title: 'Best, Average & Worst Case Analysis',
+        subtitle: 'Three lenses for understanding algorithm performance',
+        module: 'Module 1: Performance Analysis',
+        time: 'Varies', space: 'Varies', type: 'Analysis',
+        sections: [
+          {
+            icon: '💡', color: '#3b82f6', title: 'Intuition',
+            content: `Imagine you're searching for your keys. <strong>Best case:</strong> they're in the first place you look. <strong>Worst case:</strong> they're in the very last spot. <strong>Average case:</strong> on average, you find them after checking half the places.<br><br>
+The same reasoning applies to algorithms.`
+          },
+          {
+            icon: '🌟', color: '#10b981', title: 'Best Case Analysis',
+            content: `The <strong>minimum</strong> number of operations for any input of size n.<br><br>
+<strong>Linear Search Example:</strong><br>
+If the target is at index 1 → only 1 comparison → <strong>Ω(1)</strong><br><br>
+<strong>Use:</strong> Establishes lower bound on performance. Useful for "optimistic" scenario planning. Rarely sufficient alone — don't design systems based on best case.`
+          },
+          {
+            icon: '📊', color: '#f59e0b', title: 'Worst Case Analysis',
+            content: `The <strong>maximum</strong> number of operations for any input of size n.<br><br>
+<strong>Linear Search Example:</strong><br>
+If the target is not in the array → n comparisons → <strong>O(n)</strong><br><br>
+<strong>Why it matters most:</strong> Provides <strong>guarantees</strong>. In critical systems (OS, databases), we must ensure the algorithm never exceeds this bound. This is why O notation is most commonly used.<br><br>
+<strong>Worst case inputs for common algorithms:</strong><br>
+• Quick Sort: Already sorted array → O(n²)<br>
+• Binary Search: Target not in array → O(log n)<br>
+• Bubble Sort: Reverse sorted → O(n²)`
+          },
+          {
+            icon: '🔮', color: '#8b5cf6', title: 'Average Case Analysis',
+            content: `The <strong>expected</strong> number of operations averaged over all possible inputs of size n (with some probability distribution, usually uniform).<br><br>
+<strong>Linear Search Example:</strong><br>
+If target is equally likely to be at any position: average comparisons = (n+1)/2 → <strong>Θ(n)</strong><br><br>
+<strong>Formal formula:</strong><br>
+T_avg(n) = Σ P(I) × T(I) for all inputs I of size n<br><br>
+<strong>Challenge:</strong> Requires knowing the probability distribution of inputs, which is often hard to determine in practice.`
+          },
+          {
+            icon: '📋', color: '#06b6d4', title: 'Comparison Table',
+            table: {
+              headers: ['Algorithm', 'Best', 'Average', 'Worst'],
+              rows: [
+                ['Linear Search', 'O(1)', 'O(n)', 'O(n)'],
+                ['Binary Search', 'O(1)', 'O(log n)', 'O(log n)'],
+                ['Bubble Sort', 'O(n)', 'O(n²)', 'O(n²)'],
+                ['Insertion Sort', 'O(n)', 'O(n²)', 'O(n²)'],
+                ['Quick Sort', 'O(n log n)', 'O(n log n)', 'O(n²)'],
+                ['Merge Sort', 'O(n log n)', 'O(n log n)', 'O(n log n)'],
+              ]
+            }
+          }
+        ]
+      },
+
+      'insertion-sort': {
+        title: 'Insertion Sort',
+        subtitle: 'Build the sorted array one element at a time',
+        module: 'Module 1: Performance Analysis',
+        time: 'O(n²)', space: 'O(1)', type: 'Sorting',
+        sections: [
+          {
+            icon: '💡', color: '#3b82f6', title: 'Intuition',
+            content: `Think of sorting playing cards in your hand. You pick up one card at a time and insert it into its correct position among the already-sorted cards in your hand. The left portion is always sorted; you keep inserting new cards into the right spot.`
+          },
+          {
+            icon: '🔢', color: '#8b5cf6', title: 'Step-by-Step Working',
+            content: `1. Start with the second element (index 1) — first element is trivially sorted.<br>
+2. Save the current element as <strong>key</strong>.<br>
+3. Compare key with elements to its left.<br>
+4. Shift elements that are greater than key one position to the right.<br>
+5. Insert key into its correct position.<br>
+6. Repeat for all remaining elements.`
+          },
+          {
+            icon: '💻', color: '#10b981', title: 'Pseudocode',
+            code: `Algorithm InsertionSort(A, n)
+// Input: Array A of n elements
+// Output: Array A sorted in non-decreasing order
+
+for i ← 2 to n do
+    key ← A[i]
+    j ← i - 1
+    
+    while j ≥ 1 and A[j] > key do
+        A[j+1] ← A[j]   // shift element right
+        j ← j - 1
+    end while
+    
+    A[j+1] ← key        // insert at correct position
+end for`
+          },
+          {
+            icon: '🔍', color: '#f59e0b', title: 'Dry Run',
+            dryrun: [
+              { label: 'Initial Array', arr: '[5, 3, 8, 1, 4]', desc: 'Unsorted input' },
+              { label: 'Pass 1 (key=3)', arr: '[3, 5, 8, 1, 4]', desc: '3 < 5, shift 5 right, insert 3 at index 0' },
+              { label: 'Pass 2 (key=8)', arr: '[3, 5, 8, 1, 4]', desc: '8 > 5, no shift needed, 8 stays' },
+              { label: 'Pass 3 (key=1)', arr: '[1, 3, 5, 8, 4]', desc: '1 < everything, shift all right, insert 1 at 0' },
+              { label: 'Pass 4 (key=4)', arr: '[1, 3, 4, 5, 8]', desc: '4 < 5 and 4 < 8, shift both, insert after 3' },
+              { label: 'Final Result', arr: '[1, 3, 4, 5, 8]', desc: 'Sorted! ✓' },
+            ]
+          },
+          {
+            icon: '⏱️', color: '#ef4444', title: 'Complexity Analysis',
+            table: {
+              headers: ['Case', 'Time', 'Condition', 'Space'],
+              rows: [
+                ['Best', 'O(n)', 'Already sorted — inner while never executes', 'O(1)'],
+                ['Average', 'O(n²)', 'Random order', 'O(1)'],
+                ['Worst', 'O(n²)', 'Reverse sorted — maximum shifts', 'O(1)'],
+              ]
+            }
+          },
+          {
+            icon: '⚡', color: '#06b6d4', title: 'When to Use',
+            content: `<strong>✅ Use when:</strong>`,
+            useCases: ['Array is nearly sorted', 'Small arrays (n < 30)', 'Online sorting (elements arrive one by one)', 'Stable sort is needed'],
+            notCases: ['Large random arrays', 'n > 1000 (use Merge/Quick sort)']
+          }
+        ]
+      },
+
+      'bubble-sort': {
+        title: 'Bubble Sort',
+        subtitle: 'Repeatedly swap adjacent elements until sorted',
+        module: 'Module 1: Performance Analysis',
+        time: 'O(n²)', space: 'O(1)', type: 'Sorting',
+        sections: [
+          {
+            icon: '💡', color: '#3b82f6', title: 'Intuition',
+            content: `Like bubbles rising to the surface — larger elements "bubble up" to their correct position at the end of the array with each pass. After k passes, the k largest elements are in their final sorted positions.`
+          },
+          {
+            icon: '🔢', color: '#8b5cf6', title: 'Step-by-Step Working',
+            content: `1. Make n-1 passes through the array.<br>
+2. In each pass, compare adjacent elements A[j] and A[j+1].<br>
+3. If A[j] > A[j+1], swap them.<br>
+4. After each pass, the largest unsorted element is in its correct position.<br>
+5. <strong>Optimization:</strong> Track if any swap happened; if not, array is already sorted → stop early.`
+          },
+          {
+            icon: '💻', color: '#10b981', title: 'Pseudocode',
+            code: `Algorithm BubbleSort(A, n)
+// Input: Array A of n elements
+// Output: Sorted array A
+
+for i ← 1 to n-1 do
+    swapped ← false
+    
+    for j ← 1 to n-i do        // shrink range each pass
+        if A[j] > A[j+1] then
+            swap(A[j], A[j+1])
+            swapped ← true
+        end if
+    end for
+    
+    if swapped = false then
+        break   // array already sorted — optimization
+    end if
+end for`
+          },
+          {
+            icon: '🔍', color: '#f59e0b', title: 'Dry Run',
+            dryrun: [
+              { label: 'Initial', arr: '[5, 3, 8, 1, 4]', desc: 'Unsorted input' },
+              { label: 'Pass 1', arr: '[3, 5, 1, 4, 8]', desc: 'Compare & swap: (5,3)→swap, (5,8)→ok, (8,1)→swap, (8,4)→swap. 8 is now at end.' },
+              { label: 'Pass 2', arr: '[3, 1, 4, 5, 8]', desc: '5 bubbles to its correct position.' },
+              { label: 'Pass 3', arr: '[1, 3, 4, 5, 8]', desc: '4 is already in place, 3→1 swapped.' },
+              { label: 'Pass 4', arr: '[1, 3, 4, 5, 8]', desc: 'No swaps → already sorted! Stop early.' },
+            ]
+          },
+          {
+            icon: '⏱️', color: '#ef4444', title: 'Complexity Analysis',
+            table: {
+              headers: ['Case', 'Time', 'Condition', 'Space'],
+              rows: [
+                ['Best', 'O(n)', 'Already sorted (with optimization flag)', 'O(1)'],
+                ['Average', 'O(n²)', 'Random input', 'O(1)'],
+                ['Worst', 'O(n²)', 'Reverse sorted', 'O(1)'],
+              ]
+            }
+          },
+          {
+            icon: '⚡', color: '#06b6d4', title: 'When to Use',
+            content: `Bubble Sort is primarily a teaching tool — it is almost never used in practice.`,
+            useCases: ['Teaching/learning sorting concepts', 'Very small datasets', 'When stable sort needed and simplicity preferred'],
+            notCases: ['Production code', 'Large datasets', 'Performance-critical applications']
+          }
+        ]
+      },
+
+      'selection-sort': {
+        title: 'Selection Sort',
+        subtitle: 'Find the minimum and place it in position',
+        module: 'Module 1: Performance Analysis',
+        time: 'O(n²)', space: 'O(1)', type: 'Sorting',
+        sections: [
+          {
+            icon: '💡', color: '#3b82f6', title: 'Intuition',
+            content: `Imagine sorting a deck of cards by repeatedly finding the smallest card from the remaining unsorted pile and placing it at the front. You make one pass to find the minimum, then another, then another — n passes total.`
+          },
+          {
+            icon: '💻', color: '#10b981', title: 'Pseudocode',
+            code: `Algorithm SelectionSort(A, n)
+// Input: Array A of n elements
+// Output: Sorted array A
+
+for i ← 1 to n-1 do
+    minIdx ← i
+    
+    for j ← i+1 to n do           // find minimum
+        if A[j] < A[minIdx] then
+            minIdx ← j
+        end if
+    end for
+    
+    if minIdx ≠ i then             // swap with current
+        swap(A[i], A[minIdx])
+    end if
+end for`
+          },
+          {
+            icon: '🔍', color: '#f59e0b', title: 'Dry Run',
+            dryrun: [
+              { label: 'Initial', arr: '[5, 3, 8, 1, 4]', desc: 'Unsorted input' },
+              { label: 'Pass 1 (i=0)', arr: '[1, 3, 8, 5, 4]', desc: 'Min of [5,3,8,1,4] = 1 at index 3. Swap A[0]↔A[3].' },
+              { label: 'Pass 2 (i=1)', arr: '[1, 3, 8, 5, 4]', desc: 'Min of [3,8,5,4] = 3 already at index 1. No swap.' },
+              { label: 'Pass 3 (i=2)', arr: '[1, 3, 4, 5, 8]', desc: 'Min of [8,5,4] = 4 at index 4. Swap A[2]↔A[4].' },
+              { label: 'Pass 4 (i=3)', arr: '[1, 3, 4, 5, 8]', desc: 'Min of [5,8] = 5 at index 3. No swap needed.' },
+              { label: 'Final', arr: '[1, 3, 4, 5, 8]', desc: 'Sorted! ✓' },
+            ]
+          },
+          {
+            icon: '⏱️', color: '#ef4444', title: 'Complexity Analysis',
+            table: {
+              headers: ['Case', 'Time', 'Swaps', 'Space'],
+              rows: [
+                ['Best', 'O(n²)', 'O(1)', 'O(1)'],
+                ['Average', 'O(n²)', 'O(n)', 'O(1)'],
+                ['Worst', 'O(n²)', 'O(n)', 'O(1)'],
+              ]
+            }
+          },
+          {
+            icon: '📋', color: '#8b5cf6', title: 'Key Insight — Minimal Swaps',
+            content: `Selection Sort makes at most <strong>n-1 swaps</strong>, while Bubble Sort can make O(n²) swaps. This makes Selection Sort preferable when memory writes are expensive (e.g., flash storage with limited write cycles).`
+          },
+          {
+            icon: '⚡', color: '#06b6d4', title: 'When to Use',
+            useCases: ['Write operations are expensive', 'Small arrays', 'Checking if array is sorted costs too much (unlike Bubble)'],
+            notCases: ['Large arrays', 'When stability is required (not stable — equal elements can change relative order)', 'Nearly sorted arrays (Insertion Sort is better)']
+          }
+        ]
+      },
+
+      'dc-general': {
+        title: 'Divide & Conquer — General Method',
+        subtitle: 'Break the problem, solve the parts, combine',
+        module: 'Module 2: Divide & Conquer',
+        title: 'Divide & Conquer',
+        subtitle: 'Breaking big problems into smaller solvable parts',
+        module: 'Module 2: Divide & Conquer',
+        time: 'Paradigm', space: 'Varies', type: 'Paradigm',
+        objectives: ["Understand the three phases of D&C: Divide, Conquer, Combine", "Analyze recurrence relations using Master Theorem", "Identify problems suitable for D&C"],
+        takeaways: ["Divide: Split problem into subproblems", "Conquer: Solve recursively if size > base case", "Combine: Merge sub-solutions into final answer"],
+        checkpoint: {
+          questions: [
+            { q: "What is the second phase of the Divide & Conquer paradigm?", opts: ["Divide", "Combine", "Conquer", "Recurse"], ans: 2 },
+            { q: "Which theorem is typically used to solve D&C recurrences?", opts: ["Pythagoras Theorem", "Master Theorem", "Central Limit Theorem", "Bayes Theorem"], ans: 1 }
+          ]
+        },
+        sections: [
+          {
+            icon: '💡', color: '#3b82f6', title: 'The Three Pillars',
+            content: `The Divide & Conquer (D&C) strategy is a powerful paradigm for solving complex problems. It works by recursively breaking down a problem into two or more sub-problems of the same or related type, until these become simple enough to be solved directly (base cases).<br><br>
+1. <strong>Divide:</strong> Partition the problem into smaller subproblems.<br>
+2. <strong>Conquer:</strong> Solve subproblems recursively. If they are small enough, solve them directly.<br>
+3. <strong>Combine:</strong> Merge the solutions of subproblems to get the solution for the original problem.`
+          },
+          {
+            icon: '📖', color: '#8b5cf6', title: 'General Recurrence',
+            content: `D&C algorithms follow the recurrence:<br>
+<code class="notation">T(n) = a·T(n/b) + f(n)</code><br><br>
+Where:<br>
+• <strong>a</strong> = number of subproblems<br>
+• <strong>b</strong> = factor by which input shrinks<br>
+• <strong>f(n)</strong> = cost of divide + combine steps<br><br>
+Solved using the <strong>Master Theorem:</strong><br>
+If f(n) = Θ(nᶜ):<br>
+• If c < log_b(a): T(n) = Θ(n^log_b(a))<br>
+• If c = log_b(a): T(n) = Θ(n^c · log n)<br>
+• If c > log_b(a): T(n) = Θ(f(n))`
+          },
+          {
+            icon: '💻', color: '#10b981', title: 'General Template',
+            code: `Algorithm DivideAndConquer(problem)
+    if problem is small enough then
+        return solve_directly(problem)
+    end if
+    
+    // Divide: split into subproblems
+    subproblems ← Divide(problem)
+    
+    // Conquer: solve each subproblem recursively
+    solutions ← []
+    for each sub in subproblems do
+        solutions.add(DivideAndConquer(sub))
+    end for
+    
+    // Combine: merge solutions
+    return Combine(solutions)`
+          },
+          {
+            icon: '📊', color: '#f59e0b', title: 'Master Theorem Examples',
+            table: {
+              headers: ['Algorithm', 'Recurrence', 'Result'],
+              rows: [
+                ['Binary Search', 'T(n) = T(n/2) + O(1)', 'O(log n)'],
+                ['Merge Sort', 'T(n) = 2T(n/2) + O(n)', 'O(n log n)'],
+                ['Quick Sort (avg)', 'T(n) = 2T(n/2) + O(n)', 'O(n log n)'],
+                ['Strassen Matrix', 'T(n) = 7T(n/2) + O(n²)', 'O(n^2.81)'],
+                ['Max-Min', 'T(n) = 2T(n/2) + O(1)', 'O(n)'],
+              ]
+            }
+          }
+        ]
+      },
+
+      'binary-search': {
+        title: 'Binary Search',
+        subtitle: 'Eliminate half the search space at each step',
+        module: 'Module 2: Divide & Conquer',
+        time: 'O(log n)', space: 'O(1) / O(log n)', type: 'Searching',
+        objectives: ["Implement iterative and recursive binary search", "Identify preconditions for binary search", "Calculate mid efficiently to avoid overflow"],
+        takeaways: ["Space must be sorted", "Time complexity is logarithmic O(log n)", "Midpoint formula: low + (high-low)/2"],
+        checkpoint: {
+          questions: [
+            { q: "What is the prerequisite for Binary Search?", opts: ["Array size > 100", "Data must be sorted", "Random access is not required", "Algorithm must be recursive"], ans: 1 },
+            { q: "What is the worst-case time complexity of Binary Search?", opts: ["O(n)", "O(1)", "O(n log n)", "O(log n)"], ans: 3 }
+          ]
+        },
+        sections: [
+          {
+            icon: '💡', color: '#3b82f6', title: 'Intuition',
+            content: `Think of finding a word in a dictionary. You open to the middle — if the word is earlier, tear the back half away and repeat. If later, tear the front half. Each step cuts your search space in half, so you find the word in at most log₂(n) steps.`
+          },
+          {
+            icon: '📖', color: '#8b5cf6', title: 'Preconditions',
+            content: `Binary Search <strong>requires the array to be sorted</strong>. If not sorted, use Linear Search. The gain: O(n) → O(log n). For n = 1,000,000: linear = 1M comparisons, binary ≈ 20 comparisons.`
+          },
+          {
+            icon: '💻', color: '#10b981', title: 'Pseudocode',
+            code: `Algorithm BinarySearch(A, n, key)
+// Precondition: A is sorted in ascending order
+// Input: Sorted array A, size n, search key
+// Output: Index of key in A, or -1
+
+low ← 1
+high ← n
+
+while low ≤ high do
+    mid ← (low + high) / 2    // find midpoint
+    
+    if A[mid] = key then
+        return mid              // found!
+    else if A[mid] < key then
+        low ← mid + 1          // search right half
+    else
+        high ← mid - 1         // search left half
+    end if
+end while
+
+return -1   // not found
+
+// Recursive version:
+Algorithm BinarySearchRec(A, low, high, key)
+    if low > high then return -1
+    mid ← (low + high) / 2
+    if A[mid] = key then return mid
+    else if A[mid] < key then
+        return BinarySearchRec(A, mid+1, high, key)
+    else
+        return BinarySearchRec(A, low, mid-1, key)`
+          },
+          {
+            icon: '🔍', color: '#f59e0b', title: 'Dry Run',
+            dryrun: [
+              { label: 'Setup', arr: '[1, 3, 5, 7, 9, 11, 13]', desc: 'Search for key = 9. low=0, high=6' },
+              { label: 'Step 1', arr: '[1, 3, 5, →7←, 9, 11, 13]', desc: 'mid=3, A[3]=7 < 9 → search right, low=4' },
+              { label: 'Step 2', arr: '[_, _, _, _, 9, →11←, 13]', desc: 'mid=5, A[5]=11 > 9 → search left, high=4' },
+              { label: 'Step 3', arr: '[_, _, _, _, →9←, _, _]', desc: 'mid=4, A[4]=9 = 9 → FOUND at index 4!' },
+            ]
+          },
+          {
+            icon: '⏱️', color: '#ef4444', title: 'Complexity Analysis',
+            table: {
+              headers: ['Case', 'Time', 'Condition', 'Space'],
+              rows: [
+                ['Best', 'O(1)', 'Target is at midpoint', 'O(1)'],
+                ['Average', 'O(log n)', 'Target in random position', 'O(1) iterative, O(log n) recursive'],
+                ['Worst', 'O(log n)', 'Target not in array', 'O(1) iterative'],
+              ]
+            }
+          },
+          {
+            icon: '⚡', color: '#06b6d4', title: 'When to Use',
+            useCases: ['Sorted arrays/lists', 'Searching by value (not by structure)', 'Large datasets where O(n) is too slow', 'Finding insert position (lower_bound/upper_bound)'],
+            notCases: ['Unsorted data (sort first or use hash map)', 'Linked lists (no O(1) random access)', 'Databases with frequent insertions (BST/B-tree preferred)']
+          }
+        ]
+      },
+
+      'max-min': {
+        title: 'Finding Maximum and Minimum',
+        subtitle: 'Efficient D&C approach using fewer comparisons',
+        module: 'Module 2: Divide & Conquer',
+        time: 'O(n)', space: 'O(log n)', type: 'D&C',
+        objectives: ["Contrast D&C Max-Min with naive approach", "Calculate total comparisons in D&C Max-Min", "Visualize recursion tree for Max-Min"],
+        takeaways: ["Naive: 2(n-1) comparisons", "D&C: 1.5n - 2 comparisons", "25% efficiency gain in performance"],
+        checkpoint: {
+          questions: [
+            { q: "How many comparisons does the D&C Max-Min perform for n=6?", opts: ["10", "8", "7", "6"], ans: 2 },
+            { q: "What is the efficiency gain of D&C approach over naive?", opts: ["10%", "25%", "50%", "75%"], ans: 1 }
+          ]
+        },
+        sections: [
+          {
+            icon: '💡', color: '#3b82f6', title: 'Intuition',
+            content: `A naïve approach finds max with n-1 comparisons and min with another n-1 comparisons = 2(n-1) total. The Divide & Conquer approach finds <em>both</em> with only about 3n/2 comparisons — a 25% improvement that matters for very large n.`
+          },
+          {
+            icon: '💻', color: '#10b981', title: 'D&C Algorithm',
+            code: `Algorithm MaxMin(A, low, high)
+// Returns (max, min) in A[low..high]
+
+if low = high then
+    return (A[low], A[low])  // base case: one element
+end if
+
+if low + 1 = high then          // base case: two elements
+    if A[low] > A[high] then
+        return (A[low], A[high])
+    else
+        return (A[high], A[low])
+    end if
+end if
+
+// Divide
+mid ← (low + high) / 2
+(lmax, lmin) ← MaxMin(A, low, mid)
+(rmax, rmin) ← MaxMin(A, mid+1, high)
+
+// Combine
+max ← maximum(lmax, rmax)    // 1 comparison
+min ← minimum(lmin, rmin)    // 1 comparison
+return (max, min)`
+          },
+          {
+            icon: '🔍', color: '#f59e0b', title: 'Dry Run',
+            dryrun: [
+              { label: 'Input', arr: '[3, 7, 1, 9, 2, 6]', desc: 'Find max and min' },
+              { label: 'Divide', arr: '[3, 7, 1] | [9, 2, 6]', desc: 'Split into left and right halves' },
+              { label: 'Left result', arr: 'max=7, min=1', desc: 'Recursively: [3,7]→(7,3), [1]→(1,1), combine: max=7, min=1' },
+              { label: 'Right result', arr: 'max=9, min=2', desc: 'Recursively: [9,2]→(9,2), [6]→(6,6), combine: max=9, min=2' },
+              { label: 'Final Combine', arr: 'max=9, min=1', desc: 'max(7,9)=9, min(1,2)=1. ✓' },
+            ]
+          },
+          {
+            icon: '📊', color: '#8b5cf6', title: 'Comparison Count Analysis',
+            content: `Let C(n) = number of comparisons for n elements:<br><br>
+• n = 1: 0 comparisons<br>
+• n = 2: 1 comparison<br>
+• n > 2: C(n) = C(⌊n/2⌋) + C(⌈n/2⌉) + 2<br><br>
+Solving: C(n) = <strong>3n/2 - 2</strong> for even n<br><br>
+<strong>Naïve approach:</strong> 2(n-1) = 2n-2 comparisons<br>
+<strong>D&C approach:</strong> 3n/2 - 2 comparisons<br>
+<strong>Saving:</strong> n/2 - 0 ≈ 25% fewer comparisons!`
+          }
+        ]
+      },
+
+      'merge-sort': {
+        title: 'Merge Sort',
+        subtitle: 'Divide, sort halves, then merge — guaranteed O(n log n)',
+        module: 'Module 2: Divide & Conquer',
+        time: 'O(n log n)', space: 'O(n)', type: 'Sorting',
+        objectives: ["Explain the merge process with two pointers", "Prove O(n log n) complexity in all cases", "Compare stability with other sorting algorithms"],
+        takeaways: ["Stable sorting algorithm", "Not in-place (requires auxiliary array)", "Works best for large datasets & linked lists"],
+        checkpoint: {
+          questions: [
+            { q: "Merge Sort is an 'in-place' sorting algorithm.", opts: ["True", "False"], ans: 1 },
+            { q: "What is the space complexity of Merge Sort?", opts: ["O(1)", "O(log n)", "O(n)", "O(n²)"], ans: 2 }
+          ]
+        },
+        sections: [
+          {
+            icon: '💡', color: '#3b82f6', title: 'Intuition',
+            content: `Imagine two stacks of already-sorted cards. To merge them: look at the top of each stack, pick the smaller card, repeat until both stacks are empty. Merge Sort does this recursively — split the array down to individual elements (trivially sorted), then merge pairs of sorted arrays back up.`
+          },
+          {
+            icon: '💻', color: '#10b981', title: 'Pseudocode',
+            code: `Algorithm MergeSort(A, left, right)
+// Divide phase
+if left < right then
+    mid ← (left + right) / 2
+    MergeSort(A, left, mid)       // sort left half
+    MergeSort(A, mid+1, right)    // sort right half
+    Merge(A, left, mid, right)    // combine
+end if
+
+Algorithm Merge(A, left, mid, right)
+    n1 ← mid - left + 1
+    n2 ← right - mid
+    
+    L[1..n1] ← A[left..mid]      // temp arrays
+    R[1..n2] ← A[mid+1..right]
+    
+    i ← 1, j ← 1, k ← left
+    
+    while i ≤ n1 and j ≤ n2 do
+        if L[i] ≤ R[j] then
+            A[k] ← L[i]; i ← i+1
+        else
+            A[k] ← R[j]; j ← j+1
+        end if
+        k ← k+1
+    end while
+    
+    // Copy remaining elements
+    while i ≤ n1 do A[k] ← L[i]; i←i+1; k←k+1 end while
+    while j ≤ n2 do A[k] ← R[j]; j←j+1; k←k+1 end while`
+          },
+          {
+            icon: '🔍', color: '#f59e0b', title: 'Dry Run',
+            dryrun: [
+              { label: 'Initial', arr: '[5, 3, 8, 1]', desc: 'Split into halves' },
+              { label: 'Split', arr: '[5,3] | [8,1]', desc: 'Divide recursively' },
+              { label: 'Split again', arr: '[5]|[3] and [8]|[1]', desc: 'Base cases reached (single elements)' },
+              { label: 'Merge [5],[3]', arr: '[3, 5]', desc: '3 < 5: take 3 first' },
+              { label: 'Merge [8],[1]', arr: '[1, 8]', desc: '1 < 8: take 1 first' },
+              { label: 'Merge [3,5],[1,8]', arr: '[1, 3, 5, 8]', desc: '1<3→take1, 3<8→take3, 5<8→take5, take8. Done! ✓' },
+            ]
+          },
+          {
+            icon: '⏱️', color: '#ef4444', title: 'Complexity Analysis',
+            table: {
+              headers: ['Case', 'Time', 'Space', 'Stable?'],
+              rows: [
+                ['Best', 'O(n log n)', 'O(n)', 'Yes'],
+                ['Average', 'O(n log n)', 'O(n)', 'Yes'],
+                ['Worst', 'O(n log n)', 'O(n)', 'Yes'],
+              ]
+            }
+          },
+          {
+            icon: '🌟', color: '#8b5cf6', title: 'Key Advantages',
+            content: `<strong>Guaranteed O(n log n)</strong> in all cases — unlike Quick Sort.<br>
+<strong>Stable sort</strong> — equal elements maintain their relative order.<br>
+<strong>Excellent for linked lists</strong> — no random access needed.<br>
+<strong>External sorting</strong> — works well when data doesn't fit in RAM.`
+          },
+          {
+            icon: '⚡', color: '#06b6d4', title: 'When to Use',
+            useCases: ['Need guaranteed O(n log n)', 'Sorting linked lists', 'External sorting (large files)', 'Stable sort required', 'Parallel sorting'],
+            notCases: ['In-place sorting required (uses O(n) space)', 'Small arrays (Insertion Sort faster in practice)']
+          }
+        ]
+      },
+
+      'quick-sort': {
+        title: 'Quick Sort',
+        subtitle: 'Partition around a pivot — fast in practice',
+        module: 'Module 2: Divide & Conquer',
+        time: 'O(n log n) avg', space: 'O(log n)', type: 'Sorting',
+        objectives: ["Master the partition algorithm (Lomuto vs Hoare)", "Understand worst-case scenarios and how to avoid them", "Explain the Randomized Pivot optimization"],
+        takeaways: ["In-place sorting (O(log n) stack space)", "Unstable sorting algorithm", "Average case is faster than Merge Sort due to cache"],
+        checkpoint: {
+          questions: [
+            { q: "What event causes Quick Sort's worst case O(n²)?", opts: ["Random pivots", "Perfectly balanced splits", "Sorted/Reverse sorted inputs", "Large input size"], ans: 2 },
+            { q: "Which property makes Quick Sort 'in-place'?", opts: ["It uses an auxiliary array", "It modifies the input array directly", "It is stable", "It is iterative"], ans: 1 }
+          ]
+        },
+        sections: [
+          {
+            icon: '💡', color: '#3b82f6', title: 'Intuition',
+            content: `Pick any element as a "pivot". Put all smaller elements to its left and all larger to its right — the pivot is now in its <em>final position</em>. Recursively sort the left and right halves. The key insight: after partitioning, the pivot never moves again.`
+          },
+          {
+            icon: '💻', color: '#10b981', title: 'Pseudocode',
+            code: `Algorithm QuickSort(A, low, high)
+    if low < high then
+        p ← Partition(A, low, high)  // p is pivot's final position
+        QuickSort(A, low, p-1)       // sort left of pivot
+        QuickSort(A, p+1, high)      // sort right of pivot
+    end if
+
+Algorithm Partition(A, low, high)
+    pivot ← A[high]          // choose last element as pivot
+    i ← low - 1              // index of smaller element
+    
+    for j ← low to high-1 do
+        if A[j] ≤ pivot then
+            i ← i + 1
+            swap(A[i], A[j]) // move smaller to left
+        end if
+    end for
+    
+    swap(A[i+1], A[high])   // place pivot in correct spot
+    return i + 1             // return pivot index`
+          },
+          {
+            icon: '🔍', color: '#f59e0b', title: 'Dry Run',
+            dryrun: [
+              { label: 'Initial', arr: '[5, 3, 8, 1, 4]', desc: 'Pivot = 4 (last element)' },
+              { label: 'Partition scan', arr: '[3, 1, _ , 8, 5 | pivot=4]', desc: '3<4→keep, 5>4→skip, 8>4→skip, 1<4→swap. Smaller: [3,1]' },
+              { label: 'After partition', arr: '[3, 1, 4, 8, 5]', desc: 'Pivot 4 is at index 2 (its final position!)' },
+              { label: 'Recurse left', arr: '[1, 3]', desc: 'QuickSort([3,1]) → [1,3]' },
+              { label: 'Recurse right', arr: '[5, 8]', desc: 'QuickSort([8,5]) → [5,8]' },
+              { label: 'Final', arr: '[1, 3, 4, 5, 8]', desc: 'Sorted! ✓' },
+            ]
+          },
+          {
+            icon: '⏱️', color: '#ef4444', title: 'Complexity Analysis',
+            table: {
+              headers: ['Case', 'Time', 'Condition', 'Space'],
+              rows: [
+                ['Best', 'O(n log n)', 'Pivot always splits 50/50', 'O(log n)'],
+                ['Average', 'O(n log n)', 'Random pivot positions', 'O(log n)'],
+                ['Worst', 'O(n²)', 'Sorted/reverse sorted array, bad pivot', 'O(n)'],
+              ]
+            }
+          },
+          {
+            icon: '📋', color: '#8b5cf6', title: 'Avoiding Worst Case',
+            content: `<strong>Randomized pivot:</strong> Pick random element as pivot → O(n log n) expected<br>
+<strong>Median-of-three:</strong> Use median of first, middle, last as pivot<br>
+<strong>3-way partition:</strong> Handle duplicates efficiently (Dutch National Flag)<br><br>
+In practice, Quick Sort beats Merge Sort due to better cache performance and no auxiliary array needed.`
+          }
+        ]
+      },
+
+      'greedy-general': {
+        title: 'Greedy Strategy',
+        subtitle: 'Make the locally optimal choice at each step',
+        module: 'Module 3: Greedy Method',
+        time: 'Problem-dependent', space: 'O(n)', type: 'Paradigm',
+        objectives: ["Define 'locally optimal' vs 'globally optimal'", "Differentiate between Greedy and Dynamic Programming", "Explain the Greedy Choice Property"],
+        takeaways: ["Greedy makes choices that are best at the moment", "Never reconsiders past decisions", "Requires Optimal Substructure to work"],
+        checkpoint: {
+          questions: [
+            { q: "Greedy algorithms always guarantee a globally optimal solution.", opts: ["True", "False"], ans: 1 },
+            { q: "Which property is essential for a greedy algorithm to be correct?", opts: ["Infinite memory", "Greedy choice property", "Backtracking ability", "Exponential time"], ans: 1 }
+          ]
+        },
+        sections: [
+          {
+            icon: '💡', color: '#3b82f6', title: 'Intuition',
+            content: `A greedy algorithm is like a person who, when making change, always picks the largest coin possible. At each step, you make the choice that seems best <em>right now</em>, without looking back or reconsidering.<br><br>
+The magic: for certain problems, always choosing the locally best option leads to the globally best solution.`
+          },
+          {
+            icon: '📖', color: '#8b5cf6', title: 'Formal Definition & Properties',
+            content: `An algorithm is greedy if it makes a series of choices where each choice is:<br>
+1. <strong>Locally optimal</strong> at the time of choosing<br>
+2. <strong>Irrevocable</strong> — once made, not reconsidered<br><br>
+For greedy to work, the problem must have:<br>
+• <strong>Greedy choice property:</strong> A globally optimal solution can be reached by locally optimal choices<br>
+• <strong>Optimal substructure:</strong> Optimal solution contains optimal solutions to subproblems`
+          },
+          {
+            icon: '💻', color: '#10b981', title: 'Greedy Algorithm Template',
+            code: `Algorithm Greedy(problem):
+    solution ← empty set
+    candidates ← all possible choices (sorted optimally)
+    
+    while problem not solved and candidates not empty do
+        choice ← select best remaining candidate  // greedy choice
+        candidates ← candidates - {choice}
+        
+        if choice is feasible (doesn't violate constraints) then
+            solution ← solution ∪ {choice}
+        end if
+    end while
+    
+    return solution`
+          },
+          {
+            icon: '📊', color: '#f59e0b', title: 'Greedy vs DP',
+            content: `<strong>Greedy:</strong> Makes one pass, one choice at each step. No reconsideration.<br>
+<strong>Dynamic Programming:</strong> Considers all possibilities, builds up from subproblems.<br><br>
+<strong>Use Greedy when:</strong> Greedy choice property holds (provably)<br>
+<strong>Use DP when:</strong> Greedy fails but optimal substructure exists<br><br>
+<strong>Example contrast:</strong><br>
+• Fractional Knapsack → Greedy works ✓<br>
+• 0/1 Knapsack → Greedy fails, DP needed ✗`
+          }
+        ]
+      },
+
+      'container-loading': {
+        title: 'Container Loading (Fractional)',
+        subtitle: 'Load maximum weight within ship capacity',
+        module: 'Module 3: Greedy Method',
+        time: 'O(n log n)', space: 'O(1)', type: 'Greedy',
+        objectives: ["Apply greedy strategy to maximize container count", "Explain why sorting by weight is optimal here", "Contrast with maximizing total value"],
+        takeaways: ["Sort containers by weight ascending", "Pick lightest first to fit more units", "Greedy choice property holds (Exchange Argument)"],
+        checkpoint: {
+          questions: [
+            { q: "To maximize the NUMBER of containers, what is the greedy choice?", opts: ["Heaviest first", "Lightest first", "Random", "Middle weight"], ans: 1 },
+            { q: "What is the time complexity of sorting containers?", opts: ["O(n)", "O(n²)", "O(n log n)", "O(1)"], ans: 2 }
+          ]
+        },
+        sections: [
+          {
+            icon: '💡', color: '#3b82f6', title: 'Intuition',
+            content: `You have a ship with limited capacity W. You want to load as many containers as possible (maximize container count, not weight). The greedy insight: always load the lightest container first — it takes the least space, leaving room for more containers.`
+          },
+          {
+            icon: '📖', color: '#8b5cf6', title: 'Problem Statement',
+            content: `Given n containers with weights w₁, w₂, ..., wₙ and a ship of capacity C:<br>
+• Find the maximum number of containers that can be loaded<br>
+• Any subset of containers can be loaded (we're maximizing count, not value)<br><br>
+<strong>Greedy Strategy:</strong> Sort containers by weight (ascending). Load containers one by one until the ship is full.`
+          },
+          {
+            icon: '💻', color: '#10b981', title: 'Pseudocode',
+            code: `Algorithm ContainerLoading(weights, n, capacity)
+// Sort containers by weight (ascending)
+Sort(weights)   // O(n log n)
+
+totalWeight ← 0
+count ← 0
+
+for i ← 1 to n do
+    if totalWeight + weights[i] ≤ capacity then
+        totalWeight ← totalWeight + weights[i]
+        count ← count + 1
+    else
+        break   // can't fit this or any heavier container
+    end if
+end for
+
+return count`
+          },
+          {
+            icon: '🔍', color: '#f59e0b', title: 'Dry Run Example',
+            dryrun: [
+              { label: 'Input', arr: 'weights=[4,2,6,1,5], capacity=10', desc: 'Load max containers' },
+              { label: 'Sort', arr: '[1, 2, 4, 5, 6]', desc: 'Sort by weight ascending' },
+              { label: 'Load w=1', arr: 'total=1, count=1', desc: '1 ≤ 10, load it' },
+              { label: 'Load w=2', arr: 'total=3, count=2', desc: '3 ≤ 10, load it' },
+              { label: 'Load w=4', arr: 'total=7, count=3', desc: '7 ≤ 10, load it' },
+              { label: 'Load w=5?', arr: 'total=12 > 10', desc: 'Cannot load! Stop. Answer: 3 containers, weight=7' },
+            ]
+          },
+          {
+            icon: '✅', color: '#10b981', title: 'Proof of Correctness',
+            content: `<strong>Exchange Argument:</strong> Suppose optimal solution skips container i (light) and includes container j (heavy, wⱼ > wᵢ). Replacing j with i doesn't decrease the container count and uses less weight — contradiction. Therefore, greedy choice is always optimal.`
+          }
+        ]
+      },
+
+      'dijkstra': {
+        title: "Dijkstra's Shortest Path",
+        subtitle: 'Single source shortest path in weighted graphs',
+        module: 'Module 3: Greedy Method',
+        time: 'O((V+E) log V)', space: 'O(V)', type: 'Greedy / Graph',
+        objectives: ["Trace Dijkstra's algorithm step-by-step", "Explain the concept of 'Relaxation'", "Identify why it fails with negative weights"],
+        takeaways: ["Always picks the unvisited vertex with smallest distance", "Non-negative edge weights only", "Uses Priority Queue for efficiency"],
+        checkpoint: {
+          questions: [
+            { q: "Which data structure is best for Dijkstra's Extract-Min operation?", opts: ["Stack", "Queue", "Min-Heap", "Linked List"], ans: 2 },
+            { q: "What happens if a graph has negative edge weights?", opts: ["It runs faster", "Dijkstra may give wrong results", "It crashes", "Nothing"], ans: 1 }
+          ]
+        },
+        sections: [
+          {
+            icon: '💡', color: '#3b82f6', title: 'Intuition',
+            content: `Imagine you're in a city and want the shortest route to every other city. Dijkstra's algorithm works like expanding ripples in water: always extend to the nearest unvisited city next, knowing that the distance to any already-visited city cannot be improved.`
+          },
+          {
+            icon: '💻', color: '#10b981', title: 'Pseudocode',
+            code: `Algorithm Dijkstra(G, src)
+// G: weighted graph with V vertices, E edges
+// All edge weights must be non-negative!
+
+dist[src] ← 0
+dist[v] ← ∞  for all v ≠ src
+visited ← empty set
+priority_queue Q ← {(0, src)}
+
+while Q is not empty do
+    (d, u) ← Extract-Min(Q)   // greedy: pick nearest
+    
+    if u in visited then continue
+    visited ← visited ∪ {u}
+    
+    for each neighbor v of u do
+        newDist ← dist[u] + weight(u,v)
+        if newDist < dist[v] then
+            dist[v] ← newDist    // relax edge
+            Q.insert(newDist, v)
+        end if
+    end for
+end while
+
+return dist[]  // shortest distances from src`
+          },
+          {
+            icon: '🔍', color: '#f59e0b', title: 'Example Graph Walkthrough',
+            dryrun: [
+              { label: 'Graph', arr: 'A→B(4), A→C(2), B→D(3), C→B(1), C→D(5)', desc: 'Source = A' },
+              { label: 'Init', arr: 'dist=[A:0, B:∞, C:∞, D:∞]', desc: 'All distances infinity except source' },
+              { label: 'Visit A', arr: 'dist=[A:0, B:4, C:2, D:∞]', desc: 'Relax A→B(4) and A→C(2)' },
+              { label: 'Visit C (dist=2)', arr: 'dist=[A:0, B:3, C:2, D:7]', desc: 'Relax C→B(2+1=3<4)✓ and C→D(2+5=7)' },
+              { label: 'Visit B (dist=3)', arr: 'dist=[A:0, B:3, C:2, D:6]', desc: 'Relax B→D(3+3=6<7)✓' },
+              { label: 'Visit D (dist=6)', arr: 'Final: A=0, B=3, C=2, D=6', desc: 'All shortest paths found!' },
+            ]
+          },
+          {
+            icon: '⏱️', color: '#ef4444', title: 'Complexity',
+            table: {
+              headers: ['Implementation', 'Time Complexity', 'Space'],
+              rows: [
+                ['Simple array', 'O(V²)', 'O(V)'],
+                ['Binary heap + adj list', 'O((V+E) log V)', 'O(V+E)'],
+                ['Fibonacci heap', 'O(E + V log V)', 'O(V+E)'],
+              ]
+            }
+          },
+          {
+            icon: '⚡', color: '#06b6d4', title: 'Limitations & When to Use',
+            useCases: ['Non-negative edge weights only', 'Road networks, GPS routing', 'Network routing protocols (OSPF)', 'Shortest path in game maps'],
+            notCases: ['Negative edge weights (use Bellman-Ford)', 'Negative cycles', 'Unweighted graphs (use BFS)']
+          }
+        ]
+      },
+
+      'fractional-knapsack': {
+        title: 'Fractional Knapsack',
+        subtitle: 'Maximize value with fractional item selection',
+        module: 'Module 3: Greedy Method',
+        time: 'O(n log n)', space: 'O(n)', type: 'Greedy',
+        objectives: ["Define value-to-weight ratio for greedy choice", "Implement fractional knapsack algorithm", "Compare with 0/1 knapsack results"],
+        takeaways: ["Sort items by Profit/Weight ratio descending", "Greedy works because fractions are allowed", "Always fill knapsack to maximum capacity"],
+        checkpoint: {
+          questions: [
+            { q: "Why does Greedy work for Fractional Knapsack but not 0/1?", opts: ["It's faster", "Fractions allow filling gap", "Less memory", "No reason"], ans: 1 },
+            { q: "Item A has value 60, weight 10. Item B has value 100, weight 20. Which is better?", opts: ["Item A (ratio=6)", "Item B (ratio=5)", "They are same", "Depends on W"], ans: 0 }
+          ]
+        },
+        sections: [
+          {
+            icon: '💡', color: '#3b82f6', title: 'Intuition',
+            content: `You're a thief with a knapsack that holds W kg. Items have different values and weights. Unlike 0/1 Knapsack, you can take fractions of items (think sand, gold dust, liquid). The greedy strategy: always take the item with the highest value-per-weight ratio first.`
+          },
+          {
+            icon: '💻', color: '#10b981', title: 'Pseudocode',
+            code: `Algorithm FractionalKnapsack(items, n, W)
+// items[i] = (value, weight)
+
+// Compute value/weight ratio for each item
+for i ← 1 to n do
+    ratio[i] ← items[i].value / items[i].weight
+end for
+
+Sort items by ratio in descending order  // O(n log n)
+
+totalValue ← 0
+remainingCapacity ← W
+
+for i ← 1 to n do
+    if items[i].weight ≤ remainingCapacity then
+        // Take entire item
+        totalValue ← totalValue + items[i].value
+        remainingCapacity ← remainingCapacity - items[i].weight
+    else
+        // Take fraction of item
+        fraction ← remainingCapacity / items[i].weight
+        totalValue ← totalValue + fraction * items[i].value
+        break   // knapsack is now full
+    end if
+end for
+
+return totalValue`
+          },
+          {
+            icon: '🔍', color: '#f59e0b', title: 'Dry Run Example',
+            dryrun: [
+              { label: 'Items', arr: 'A(v=60,w=10), B(v=100,w=20), C(v=120,w=30). W=50', desc: 'Capacity = 50' },
+              { label: 'Ratios', arr: 'A=6.0, B=5.0, C=4.0', desc: 'Sort by ratio: A > B > C' },
+              { label: 'Take A (all)', arr: 'value=60, remain=40', desc: '10 ≤ 40, take full item A' },
+              { label: 'Take B (all)', arr: 'value=160, remain=20', desc: '20 ≤ 20, take full item B' },
+              { label: 'Take C (frac)', arr: 'value=160+80=240', desc: '30 > 20, take 20/30 of C: 20/30 × 120 = 80. Done!' },
+            ]
+          },
+          {
+            icon: '📊', color: '#8b5cf6', title: 'Why Greedy Works Here',
+            content: `<strong>Proof:</strong> Taking the highest ratio item first maximizes value per unit weight. Since fractions are allowed, we can always "fill" the knapsack optimally. The exchange argument: if we swap any portion of our choice for a lower-ratio item, total value decreases.<br><br>
+<strong>Contrast with 0/1 Knapsack:</strong> Without fractions, greedy can fail! Example: W=10, items: (value=6,w=6), (value=5,w=5), (value=4,w=4). Greedy picks ratio=1 item, but optimal is to pick items with value=5+4=9 using weight=9.`
+          }
+        ]
+      },
+
+      'job-sequencing': {
+        title: 'Job Sequencing with Deadlines',
+        subtitle: 'Schedule jobs to maximize profit before deadlines',
+        module: 'Module 3: Greedy Method',
+        time: 'O(n log n)', space: 'O(n)', type: 'Greedy',
+        objectives: ["Optimize job scheduling to maximize revenue", "Explain the logic of scheduling jobs 'as late as possible'", "Determine the maximum profit for a set of jobs"],
+        takeaways: ["Greedy choice: High profit jobs first", "Scheduling choice: Latest available slot before deadline", "Efficiently uses time slots to maximize gain"],
+        checkpoint: {
+          questions: [
+            { q: "Why do we schedule jobs 'as late as possible' in Job Sequencing?", opts: ["They are harder to do", "To save earlier slots for jobs with tighter deadlines", "Deadlines don't matter", "Just a convention"], ans: 1 },
+            { q: "A job has deadline 2 and profit 100. Best slot to pick first?", opts: ["Slot 1", "Slot 2", "Any slot", "None"], ans: 1 }
+          ]
+        },
+        sections: [
+          {
+            icon: '💡', color: '#3b82f6', title: 'Intuition',
+            content: `You have n jobs, each with a deadline and profit. Each job takes exactly 1 time unit. You want to schedule jobs to maximize total profit. The greedy insight: always consider the highest profit job first, and schedule it as late as possible before its deadline (to keep earlier slots free for other jobs).`
+          },
+          {
+            icon: '💻', color: '#10b981', title: 'Pseudocode',
+            code: `Algorithm JobSequencing(jobs, n)
+// jobs[i] = (profit, deadline)
+
+Sort jobs by profit (descending)   // Greedy choice
+
+slots ← array of size maxDeadline, all -1  // -1 = free
+scheduled ← []
+totalProfit ← 0
+
+for each job j in sorted order do
+    // Find latest free slot before deadline
+    for t ← min(j.deadline, n) downto 1 do
+        if slots[t] = -1 then    // slot is free
+            slots[t] ← j.id
+            scheduled.add(j)
+            totalProfit ← totalProfit + j.profit
+            break
+        end if
+    end for
+end for
+
+return (scheduled, totalProfit)`
+          },
+          {
+            icon: '🔍', color: '#f59e0b', title: 'Dry Run Example',
+            dryrun: [
+              { label: 'Jobs', arr: 'J1(p=100,d=2), J2(p=19,d=1), J3(p=27,d=2), J4(p=25,d=1)', desc: 'Sort by profit: J1,J3,J4,J2' },
+              { label: 'Schedule J1 (profit=100,d=2)', arr: 'slot[2]=J1', desc: 'Latest free slot ≤ 2 is slot 2' },
+              { label: 'Schedule J3 (profit=27,d=2)', arr: 'slot[1]=J3', desc: 'Slot 2 taken, use slot 1' },
+              { label: 'Skip J4 (profit=25,d=1)', arr: 'No free slot ≤ 1', desc: 'Slot 1 is taken, skip J4' },
+              { label: 'Skip J2 (profit=19,d=1)', arr: 'No free slot ≤ 1', desc: 'Slot 1 is taken, skip J2' },
+              { label: 'Result', arr: 'Schedule: [J3, J1], Profit=127', desc: 'Maximum achievable profit!' },
+            ]
+          },
+          {
+            icon: '⏱️', color: '#8b5cf6', title: 'Complexity',
+            content: `<strong>Sorting:</strong> O(n log n)<br>
+<strong>Slot finding:</strong> O(n²) worst case with simple array<br>
+<strong>With Union-Find:</strong> Can be improved to O(n log n) total<br><br>
+<strong>Overall:</strong> O(n²) simple, O(n log n) optimized`
+          }
+        ]
+      },
+
+      'dp-general': {
+        title: 'Dynamic Programming — General Method',
+        subtitle: 'Optimal substructure + overlapping subproblems',
+        module: 'Module 4: Dynamic Programming',
+        time: 'Varies (polynomial)', space: 'O(n) to O(n²)', type: 'Paradigm',
+        objectives: ["Identify the two core properties of DP problems", "Master the 'Memoization' vs 'Tabulation' trade-off", "Systematically design a DP solution"],
+        takeaways: ["DP = Recursion + Memoization (or Tabulation)", "Eliminates redundant calculations for overlapping subproblems", "Requires Optimal Substructure property"],
+        checkpoint: {
+          questions: [
+            { q: "What are the two key properties needed for Dynamic Programming?", opts: ["Divide and Conquer", "Greedy choice & Search", "Optimal Substructure & Overlapping Subproblems", "Recursion & Sorting"], ans: 2 },
+            { q: "Tabulation is a Bottom-Up approach.", opts: ["True", "False"], ans: 0 }
+          ]
+        },
+        sections: [
+          {
+            icon: '💡', color: '#3b82f6', title: 'Intuition',
+            content: `Imagine calculating Fibonacci: fib(5) needs fib(4) and fib(3). But fib(4) needs fib(3) again! Pure recursion recalculates fib(3) many times. Dynamic Programming says: <em>compute each subproblem once, store the result, reuse it</em>.<br><br>
+DP = "Careful brute force" + memoization`
+          },
+          {
+            icon: '📖', color: '#8b5cf6', title: 'Two Key Properties',
+            content: `<strong>1. Optimal Substructure:</strong> The optimal solution to the problem contains optimal solutions to subproblems.<br>
+Example: Shortest path A→C through B = shortest(A→B) + shortest(B→C)<br><br>
+<strong>2. Overlapping Subproblems:</strong> The same subproblems are solved multiple times.<br>
+Without DP: exponential. With DP: polynomial.`
+          },
+          {
+            icon: '💻', color: '#10b981', title: 'Two DP Approaches',
+            code: `// TOP-DOWN (Memoization) — recursive + cache
+memo ← empty map
+
+Algorithm FibMemo(n):
+    if n in memo then return memo[n]
+    if n ≤ 1 then return n
+    
+    memo[n] ← FibMemo(n-1) + FibMemo(n-2)
+    return memo[n]
+
+// BOTTOM-UP (Tabulation) — iterative, build table
+Algorithm FibTabulation(n):
+    dp[0] ← 0, dp[1] ← 1
+    
+    for i ← 2 to n do
+        dp[i] ← dp[i-1] + dp[i-2]
+    end for
+    
+    return dp[n]`
+          },
+          {
+            icon: '📊', color: '#f59e0b', title: 'Top-Down vs Bottom-Up',
+            table: {
+              headers: ['Aspect', 'Top-Down (Memo)', 'Bottom-Up (Tabulation)'],
+              rows: [
+                ['Approach', 'Recursive + cache', 'Iterative, fills table'],
+                ['Base cases', 'Base case in recursion', 'Base cases fill table first'],
+                ['Ordering', 'Automatic (call stack)', 'Must determine order manually'],
+                ['Subproblems', 'Only needed ones computed', 'All subproblems computed'],
+                ['Space', 'O(n) stack + memo', 'O(n) table, no stack'],
+                ['Speed', 'Slightly slower (fn calls)', 'Generally faster'],
+              ]
+            }
+          },
+          {
+            icon: '📋', color: '#8b5cf6', title: 'DP Design Steps',
+            content: `<strong>1. Identify the subproblem:</strong> What smaller version of the problem do we need?<br>
+<strong>2. Write the recurrence:</strong> Express solution in terms of subproblem solutions<br>
+<strong>3. Identify base cases:</strong> Trivially solvable subproblems<br>
+<strong>4. Compute in right order:</strong> Ensure subproblems are solved before being needed<br>
+<strong>5. Reconstruct solution:</strong> (Optional) Trace back to find the actual solution, not just the value`
+          }
+        ]
+      },
+
+      '01-knapsack': {
+        title: '0/1 Knapsack Problem',
+        subtitle: 'DP table fills up the solution optimally',
+        module: 'Module 4: Dynamic Programming',
+        time: 'O(n×W)', space: 'O(n×W)', type: 'Dynamic Programming',
+        objectives: ["Build the DP state transition table for knapsack", "Analyze the pseudo-polynomial time complexity", "Recover chosen items using the backtrack method"],
+        takeaways: ["dp[i][w] state represents max profit", "Complexity depends on capacity W", "Backtracking is required to find which items were picked"],
+        checkpoint: {
+          questions: [
+            { q: "What does '0/1' specify in this knapsack problem?", opts: ["Item values", "Binary choice: pick or don't pick", "Weight range", "Algorithm version"], ans: 1 },
+            { q: "If we can take fractions of items, do we still use DP?", opts: ["Yes", "No, use Greedy", "Depends", "Yes, but with floats"], ans: 1 }
+          ]
+        },
+        sections: [
+          {
+            icon: '💡', color: '#3b82f6', title: 'Intuition',
+            content: `You can take each item fully or not at all (0 or 1 — hence "0/1"). Greedy fails here! The DP insight: build a table where dp[i][w] = maximum value using first i items with capacity w. Each cell either excludes item i or includes it.`
+          },
+          {
+            icon: '📖', color: '#8b5cf6', title: 'Recurrence Relation',
+            content: `<strong>dp[i][w]</strong> = max value using items 1..i with weight limit w<br><br>
+<code class="notation">dp[i][w] = dp[i-1][w]</code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if w < weight[i] (can't take item i)<br>
+<code class="notation">dp[i][w] = max(dp[i-1][w], dp[i-1][w-weight[i]] + value[i])</code>&nbsp;otherwise<br><br>
+<strong>Base case:</strong> dp[0][w] = 0 for all w, dp[i][0] = 0 for all i`
+          },
+          {
+            icon: '💻', color: '#10b981', title: 'Pseudocode',
+            code: `Algorithm Knapsack01(n, W, weights[], values[])
+// n items, capacity W
+
+// Initialize DP table
+for i ← 0 to n do dp[i][0] ← 0 end for
+for w ← 0 to W do dp[0][w] ← 0 end for
+
+for i ← 1 to n do
+    for w ← 1 to W do
+        dp[i][w] ← dp[i-1][w]    // don't take item i
+        
+        if weights[i] ≤ w then
+            take ← dp[i-1][w-weights[i]] + values[i]
+            dp[i][w] ← max(dp[i][w], take)  // take item i?
+        end if
+    end for
+end for
+
+return dp[n][W]   // max value
+
+// Reconstruct which items were taken:
+Algorithm Reconstruct(dp, weights, n, W):
+    items ← []
+    w ← W
+    for i ← n downto 1 do
+        if dp[i][w] ≠ dp[i-1][w] then
+            items.add(i)
+            w ← w - weights[i]
+        end if
+    end for
+    return items`
+          },
+          {
+            icon: '🔍', color: '#f59e0b', title: 'Dry Run Table',
+            dryrun: [
+              { label: 'Items', arr: 'Item1(v=1,w=1), Item2(v=6,w=2), Item3(v=10,w=3), Item4(v=16,w=5)', desc: 'W = 7 (capacity)' },
+              { label: 'Row 0 (no items)', arr: '[0,0,0,0,0,0,0,0]', desc: 'dp[0][w]=0 for all w' },
+              { label: 'Row 1 (item1 v=1,w=1)', arr: '[0,1,1,1,1,1,1,1]', desc: 'Can take item1 for any w≥1' },
+              { label: 'Row 2 (item2 v=6,w=2)', arr: '[0,1,6,7,7,7,7,7]', desc: 'w=2: max(1,6)=6. w=3: max(1,1+6)=7' },
+              { label: 'Row 3 (item3 v=10,w=3)', arr: '[0,1,6,10,11,16,17,17]', desc: 'w=3: max(6,10)=10. w=5: max(7,6+10)=16' },
+              { label: 'Row 4 (item4 v=16,w=5)', arr: '[0,1,6,10,11,16,17,22]', desc: 'w=7: max(17,1+16)=22. Answer: 22! ✓' },
+            ]
+          },
+          {
+            icon: '⚡', color: '#06b6d4', title: 'When to Use',
+            useCases: ['Items can only be taken whole', 'Resource allocation with binary choices', 'Budget planning', 'Portfolio selection'],
+            notCases: ['Fractional items allowed (use Greedy)', 'W is very large (exponential in W — pseudo-polynomial)']
+          }
+        ]
+      },
+
+      'fibonacci': {
+        title: 'Fibonacci — Top-Down & Bottom-Up',
+        subtitle: 'The classic DP example with full comparison',
+        module: 'Module 4: Dynamic Programming',
+        time: 'O(n)', space: 'O(n) or O(1)', type: 'Dynamic Programming',
+        objectives: ["Map the call tree of naive vs memoized recursion", "Perform space optimization on tabulation", "Explain the time complexity reduction from exponential to linear"],
+        takeaways: ["Tabulation is generally faster in practice", "O(1) space is possible using only two variables", "Base cases are essential for any DP approach"],
+        checkpoint: {
+          questions: [
+            { q: "What is the time complexity of the Naive Recursive Fibonacci?", opts: ["O(n)", "O(n²)", "O(2ⁿ)", "O(log n)"], ans: 2 },
+            { q: "For F(50), which method is better?", opts: ["Naive Recursive", "Tabulation", "Brute Force", "Random"], ans: 1 }
+          ]
+        },
+        sections: [
+          {
+            icon: '💡', color: '#3b82f6', title: 'Intuition',
+            content: `Fibonacci: F(n) = F(n-1) + F(n-2). Naive recursion computes F(2) an exponential number of times. DP stores results, making it linear. This is the textbook example of overlapping subproblems.`
+          },
+          {
+            icon: '💻', color: '#10b981', title: 'All Four Approaches',
+            code: `// 1. NAIVE RECURSION — O(2^n) time, terrible!
+Algorithm FibNaive(n):
+    if n ≤ 1 then return n
+    return FibNaive(n-1) + FibNaive(n-2)
+
+// 2. TOP-DOWN MEMOIZATION — O(n) time, O(n) space
+memo ← array of -1, size n+1
+
+Algorithm FibMemo(n):
+    if n ≤ 1 then return n
+    if memo[n] ≠ -1 then return memo[n]
+    memo[n] ← FibMemo(n-1) + FibMemo(n-2)
+    return memo[n]
+
+// 3. BOTTOM-UP TABULATION — O(n) time, O(n) space
+Algorithm FibTab(n):
+    dp[0] ← 0, dp[1] ← 1
+    for i ← 2 to n do
+        dp[i] ← dp[i-1] + dp[i-2]
+    end for
+    return dp[n]
+
+// 4. SPACE OPTIMIZED — O(n) time, O(1) space
+Algorithm FibOpt(n):
+    if n ≤ 1 then return n
+    prev2 ← 0, prev1 ← 1
+    for i ← 2 to n do
+        curr ← prev1 + prev2
+        prev2 ← prev1
+        prev1 ← curr
+    end for
+    return prev1`
+          },
+          {
+            icon: '📊', color: '#f59e0b', title: 'Comparison of Approaches',
+            table: {
+              headers: ['Approach', 'Time', 'Space', 'Calls for F(5)'],
+              rows: [
+                ['Naive Recursive', 'O(2ⁿ)', 'O(n) stack', '15 calls'],
+                ['Memoization', 'O(n)', 'O(n)', '5 calls'],
+                ['Tabulation', 'O(n)', 'O(n)', 'n iterations'],
+                ['Space Optimized', 'O(n)', 'O(1)', 'n iterations'],
+              ]
+            }
+          },
+          {
+            icon: '🔍', color: '#8b5cf6', title: 'Call Tree Comparison (n=5)',
+            dryrun: [
+              { label: 'Naive calls', arr: 'F(5)→F(4)→F(3)→...', desc: 'F(3) computed 2×, F(2) computed 3×, F(1) computed 5×!' },
+              { label: 'With memo', arr: 'F(5),F(4),F(3),F(2),F(1)', desc: 'Each value computed exactly once' },
+              { label: 'Bottom-up', arr: 'F(0)=0, F(1)=1, F(2)=1, F(3)=2, F(4)=3, F(5)=5', desc: 'Sequential computation, no recursion' },
+            ]
+          }
+        ]
+      },
+
+      'dp-shortest-path': {
+        title: 'Shortest Path — Floyd-Warshall',
+        subtitle: 'All-pairs shortest paths using DP',
+        module: 'Module 4: Dynamic Programming',
+        time: 'O(V³)', space: 'O(V²)', type: 'Dynamic Programming',
+        objectives: ["Explain the role of the intermediate vertex 'k'", "Identify negative cycles in a graph", "Compare Floyd-Warshall with Dijkstra"],
+        takeaways: ["Solves all-pairs shortest paths in O(V³)", "Simple triple-nested loop implementation", "Can detect negative weight cycles"],
+        checkpoint: {
+          questions: [
+            { q: "Floyd-Warshall can handle negative edge weights.", opts: ["True", "False"], ans: 0 },
+            { q: "What is the time complexity of Floyd-Warshall?", opts: ["O(V+E)", "O(V²)", "O(V³)", "O(E log V)"], ans: 2 }
+          ]
+        },
+        sections: [
+          {
+            icon: '💡', color: '#3b82f6', title: 'Intuition',
+            content: `Floyd-Warshall answers: "What's the shortest path between <em>every pair</em> of vertices?" The DP insight: incrementally allow more intermediate vertices. dist[i][j] via vertex k = shortest(dist[i][k] + dist[k][j]).`
+          },
+          {
+            icon: '📖', color: '#8b5cf6', title: 'Recurrence',
+            content: `Let dist[i][j][k] = shortest path from i to j using only vertices 1..k as intermediates.<br><br>
+<code class="notation">dist[i][j][k] = min(dist[i][j][k-1], dist[i][k][k-1] + dist[k][j][k-1])</code><br><br>
+Base case: dist[i][j][0] = direct edge weight (or ∞ if no edge)<br>
+Space optimized: use 2D array and update in-place.`
+          },
+          {
+            icon: '💻', color: '#10b981', title: 'Pseudocode',
+            code: `Algorithm FloydWarshall(W, V)
+// W: V×V weight matrix, W[i][i]=0, W[i][j]=∞ if no edge
+
+dist ← copy of W
+
+for k ← 1 to V do         // try each intermediate vertex
+    for i ← 1 to V do
+        for j ← 1 to V do
+            if dist[i][k] + dist[k][j] < dist[i][j] then
+                dist[i][j] ← dist[i][k] + dist[k][j]
+            end if
+        end for
+    end for
+end for
+
+// Check for negative cycles
+for i ← 1 to V do
+    if dist[i][i] < 0 then
+        print "Negative cycle detected!"
+    end if
+end for
+
+return dist  // all-pairs shortest paths`
+          },
+          {
+            icon: '⏱️', color: '#ef4444', title: 'Complexity vs Dijkstra',
+            table: {
+              headers: ['Algorithm', 'Time', 'Space', 'Use Case'],
+              rows: [
+                ['Dijkstra (one src)', 'O((V+E) log V)', 'O(V)', 'Single source, non-negative weights'],
+                ['Floyd-Warshall', 'O(V³)', 'O(V²)', 'All pairs, handles negative edges'],
+                ['Bellman-Ford', 'O(VE)', 'O(V)', 'Single source, negative weights'],
+              ]
+            }
+          }
+        ]
+      },
+
+      'tsp': {
+        title: 'Travelling Salesman Problem (TSP)',
+        subtitle: 'Visit all cities exactly once, minimize total distance',
+        module: 'Module 4: Dynamic Programming',
+        time: 'O(n² × 2ⁿ) DP', space: 'O(n × 2ⁿ)', type: 'Dynamic Programming / NP-Hard',
+        objectives: ["Explain why TSP is NP-Hard", "Analyze the decrease in complexity from O(n!) to O(n² 2ⁿ)", "Describe the bitmask approach for representing sets"],
+        takeaways: ["DP approach is Held-Karp algorithm", "Significantly better than brute force but still exponential", "Complexity is O(n² 2ⁿ)"],
+        checkpoint: {
+          questions: [
+            { q: "What is the complexity of Brute Force for TSP?", opts: ["O(n²)", "O(2ⁿ)", "O(n!)", "O(n)"], ans: 2 },
+            { q: "Held-Karp algorithm uses bitmasking to represent visited cities.", opts: ["True", "False"], ans: 0 }
+          ]
+        },
+        sections: [
+          {
+            icon: '💡', color: '#3b82f6', title: 'Intuition',
+            content: `A salesman must visit n cities exactly once and return home, minimizing total distance. Brute force: O(n!) — impossible for large n. DP (Held-Karp algorithm) reduces this to O(n² × 2ⁿ) — better, but still exponential.<br><br>
+TSP is NP-Hard, meaning no polynomial algorithm is known.`
+          },
+          {
+            icon: '💻', color: '#10b981', title: 'DP (Held-Karp) Algorithm',
+            code: `Algorithm TSP_DP(dist, n)
+// dp[S][i] = min cost to visit all cities in set S,
+//             starting from city 0, ending at city i
+
+dp[{0}][0] ← 0
+dp[S][i] ← ∞  for all other S, i
+
+for each subset S of {0,...,n-1} containing 0 do
+    for each city i in S, i ≠ 0 do
+        for each city j not in S do
+            newCost ← dp[S][i] + dist[i][j]
+            if newCost < dp[S ∪ {j}][j] then
+                dp[S ∪ {j}][j] ← newCost
+            end if
+        end for
+    end for
+end for
+
+// Final answer: return to city 0
+ans ← ∞
+allCities ← {0, 1, ..., n-1}
+for i ← 1 to n-1 do
+    ans ← min(ans, dp[allCities][i] + dist[i][0])
+end for
+
+return ans`
+          },
+          {
+            icon: '🔍', color: '#f59e0b', title: 'Small Example (4 cities)',
+            dryrun: [
+              { label: 'Cities', arr: '0,1,2,3 with given distances', desc: 'Find min Hamiltonian cycle' },
+              { label: 'Start', arr: 'dp[{0}][0]=0', desc: 'At city 0, visited only city 0' },
+              { label: 'Expand to 1 city', arr: 'dp[{0,1}][1], dp[{0,2}][2], dp[{0,3}][3]', desc: 'All ways to visit 1 other city from 0' },
+              { label: 'Expand to 2 cities', arr: 'dp[{0,1,2}][2], dp[{0,1,3}][3], ...', desc: 'Best way to reach each 2-city subset' },
+              { label: 'Full tour', arr: 'dp[{0,1,2,3}][1..3] + return to 0', desc: 'Pick min over all ending cities' },
+            ]
+          },
+          {
+            icon: '📊', color: '#8b5cf6', title: 'TSP Solution Approaches',
+            table: {
+              headers: ['Approach', 'Time', 'Optimality', 'Use Case'],
+              rows: [
+                ['Brute Force', 'O(n!)', 'Optimal', 'n ≤ 10'],
+                ['DP Held-Karp', 'O(n²×2ⁿ)', 'Optimal', 'n ≤ 20'],
+                ['Greedy Nearest Neighbor', 'O(n²)', '~25% off optimal', 'Fast approx'],
+                ['Christofides', 'O(n³)', '≤1.5× optimal', 'Best known approx'],
+                ['Simulated Annealing', 'Varies', 'Near-optimal', 'Large n, practical'],
+              ]
+            }
+          }
+        ]
+      },
+
+      'np-hard': {
+        title: 'NP-Hard Problems',
+        subtitle: 'The boundary of efficient computation',
+        module: 'Module 4: Dynamic Programming',
+        time: 'No polynomial known', space: 'Varies', type: 'Complexity Theory',
+        sections: [
+          {
+            icon: '💡', color: '#3b82f6', title: 'Intuition',
+            content: `Some problems seem fundamentally hard. No one has found a polynomial algorithm for them, and we have strong theoretical reasons to believe none exists. These are called NP-Hard problems. TSP, Knapsack (exactly), 3-SAT are famous examples.`
+          },
+          {
+            icon: '📖', color: '#8b5cf6', title: 'Complexity Classes',
+            content: `<strong>P:</strong> Problems solvable in polynomial time O(nᵏ). Examples: sorting, shortest paths, matrix multiplication.<br><br>
+<strong>NP:</strong> Problems where a solution can be <em>verified</em> in polynomial time. Examples: TSP tour verification, Hamiltonian path verification.<br><br>
+<strong>NP-Hard:</strong> At least as hard as the hardest problems in NP. Solving any NP-Hard problem efficiently would solve all NP problems.<br><br>
+<strong>NP-Complete:</strong> Both NP and NP-Hard. The "hardest" problems in NP.<br><br>
+<strong>The Big Question: P = NP?</strong> If yes, all NP problems have poly-time solutions. Worth $1 million (Clay Institute Millennium Prize).`
+          },
+          {
+            icon: '📊', color: '#10b981', title: 'Famous NP-Complete Problems',
+            table: {
+              headers: ['Problem', 'Description', 'Related Tractable Version'],
+              rows: [
+                ['TSP (decision)', 'Tour of length ≤ k?', 'Shortest path (P)'],
+                ['0/1 Knapsack', 'Exact value ≥ k?', 'Fractional Knapsack (P)'],
+                ['3-SAT', 'Boolean formula satisfiable?', '2-SAT (P)'],
+                ['Hamiltonian Path', 'Visit all vertices once?', 'Eulerian path (P)'],
+                ['Graph Coloring', 'Color with k colors?', '2-coloring (P)'],
+                ['Subset Sum', 'Subset summing to target?', 'Sorted subset sum (P)'],
+              ]
+            }
+          },
+          {
+            icon: '⚡', color: '#f59e0b', title: 'Handling NP-Hard Problems in Practice',
+            content: `Since exact polynomial solutions are unknown, we use:<br><br>
+<strong>1. Approximation algorithms:</strong> Find solution within guaranteed factor of optimal (e.g., 2-approx for TSP metric)<br>
+<strong>2. Heuristics:</strong> Fast algorithms that work well in practice but no guarantee (greedy nearest neighbor for TSP)<br>
+<strong>3. Parameterized algorithms:</strong> Polynomial if some parameter k is small<br>
+<strong>4. Special cases:</strong> If input has structure, may be tractable<br>
+<strong>5. Exponential algorithms with pruning:</strong> Branch and bound, A* search`
+          }
+        ]
+      },
+
+      'complexity-cheatsheet': {
+        title: 'Complexity Cheatsheet',
+        subtitle: 'Quick reference for all algorithms covered',
+        module: 'Resources',
+        time: 'Reference', space: 'Reference', type: 'Reference',
+        sections: [
+          {
+            icon: '📊', color: '#3b82f6', title: 'Sorting Algorithms',
+            table: {
+              headers: ['Algorithm', 'Best', 'Average', 'Worst', 'Space', 'Stable'],
+              rows: [
+                ['Insertion Sort', 'O(n)', 'O(n²)', 'O(n²)', 'O(1)', 'Yes'],
+                ['Bubble Sort', 'O(n)', 'O(n²)', 'O(n²)', 'O(1)', 'Yes'],
+                ['Selection Sort', 'O(n²)', 'O(n²)', 'O(n²)', 'O(1)', 'No'],
+                ['Merge Sort', 'O(n log n)', 'O(n log n)', 'O(n log n)', 'O(n)', 'Yes'],
+                ['Quick Sort', 'O(n log n)', 'O(n log n)', 'O(n²)', 'O(log n)', 'No'],
+              ]
+            }
+          },
+          {
+            icon: '📊', color: '#10b981', title: 'Searching & Graphs',
+            table: {
+              headers: ['Algorithm', 'Time', 'Space', 'Notes'],
+              rows: [
+                ['Linear Search', 'O(n)', 'O(1)', 'Unsorted array'],
+                ['Binary Search', 'O(log n)', 'O(1)', 'Sorted array required'],
+                ["Dijkstra's", 'O((V+E) log V)', 'O(V)', 'Non-negative weights'],
+                ['Floyd-Warshall', 'O(V³)', 'O(V²)', 'All-pairs, allows neg edges'],
+                ['BFS', 'O(V+E)', 'O(V)', 'Unweighted shortest path'],
+              ]
+            }
+          },
+          {
+            icon: '📊', color: '#8b5cf6', title: 'Dynamic Programming',
+            table: {
+              headers: ['Algorithm', 'Time', 'Space', 'Approach'],
+              rows: [
+                ['Fibonacci', 'O(n)', 'O(1)', 'Bottom-up optimized'],
+                ['0/1 Knapsack', 'O(nW)', 'O(nW)', 'DP table'],
+                ['Fractional Knapsack', 'O(n log n)', 'O(n)', 'Greedy (not DP)'],
+                ['TSP Held-Karp', 'O(n²×2ⁿ)', 'O(n×2ⁿ)', 'Bitmask DP'],
+              ]
+            }
+          }
+        ]
+      },
+
+      'quiz': {
+        title: 'Practice Quiz',
+        subtitle: 'Test your understanding with interactive questions',
+        module: 'Resources',
+        time: 'N/A', space: 'N/A', type: 'Practice',
+        isQuiz: true,
+        sections: []
+      },
+
+      'problems': {
+        title: 'Practice Problems',
+        subtitle: 'Coding challenges for each module',
+        module: 'Resources',
+        time: 'N/A', space: 'N/A', type: 'Practice',
+        isProblems: true,
+        sections: []
+      }
+    };
+
+    const MODULES = {
+      m1: {
+        title: 'Module 1: Performance Analysis',
+        icon: '📊',
+        color: '#3b82f6',
+        desc: 'Foundations of algorithm design, complexity analysis, and basic sorting algorithms.',
+        topics: ['algo-features', 'pseudocode', 'time-complexity', 'space-complexity', 'asymptotic', 'cases', 'insertion-sort', 'bubble-sort', 'selection-sort']
+      },
+      m2: {
+        title: 'Module 2: Divide and Conquer',
+        icon: '🔀',
+        color: '#10b981',
+        desc: 'Recursive problem decomposition: binary search, merge sort, quick sort.',
+        topics: ['dc-general', 'binary-search', 'max-min', 'merge-sort', 'quick-sort']
+      },
+      m3: {
+        title: 'Module 3: Greedy Method',
+        icon: '🌿',
+        color: '#f59e0b',
+        desc: 'Locally optimal choices leading to globally optimal solutions.',
+        topics: ['greedy-general', 'container-loading', 'dijkstra', 'fractional-knapsack', 'job-sequencing']
+      },
+      m4: {
+        title: 'Module 4: Dynamic Programming',
+        icon: '🧬',
+        color: '#8b5cf6',
+        desc: 'Optimal substructure + overlapping subproblems = polynomial solutions.',
+        topics: ['dp-general', '01-knapsack', 'fibonacci', 'dp-shortest-path', 'tsp', 'np-hard']
+      }
+    };
+
+    // ============================================================
+    // GUIDED LEARNING PATH & STATE
+    // ============================================================
+    const PATH = [
+      ...MODULES.m1.topics,
+      ...MODULES.m2.topics,
+      ...MODULES.m3.topics,
+      ...MODULES.m4.topics
+    ];
+
+    let state = {
+      completedTopics: [],
+      currentTopicId: PATH[0],
+      reviewMode: false,
+      streak: 0,
+      lastVisit: null
+    };
+
+    function saveState() {
+      localStorage.setItem('algoverse_progress', JSON.stringify(state));
+    }
+
+    function loadState() {
+      const saved = localStorage.getItem('algoverse_progress');
+      if (saved) {
+        state = { ...state, ...JSON.parse(saved) };
+        // Check streak
+        const today = new Date().toDateString();
+        if (state.lastVisit && state.lastVisit !== today) {
+          const last = new Date(state.lastVisit);
+          const diff = (new Date(today) - last) / (1000 * 60 * 60 * 24);
+          if (diff === 1) state.streak++; else if (diff > 1) state.streak = 1;
+        } else if (!state.lastVisit) {
+          state.streak = 1;
+        }
+        state.lastVisit = today;
+      }
+    }
+
+    // Initial Additions to TOPICS for testing/structure (Real implementation should have these for all)
+    TOPICS['algo-features'].objectives = ["Identify the 5 essential properties of algorithms", "Differentiate between an algorithm and a heuristic", "Understand effectiveness vs definiteness"];
+    TOPICS['algo-features'].takeaways = ["Every algorithm MUST terminate (Finiteness)", "Steps must be unambiguous (Definiteness)", "A valid algorithm produces at least one output"];
+    TOPICS['algo-features'].checkpoint = {
+      questions: [
+        { q: "Which property ensures an algorithm eventually stops?", opts: ["Definiteness", "Finiteness", "Effectiveness", "Generality"], ans: 1 },
+        { q: "An instruction 'Add a few numbers' violates which property?", opts: ["Input", "Output", "Definiteness", "Effectiveness"], ans: 2 }
+      ]
+    };
+
+    TOPICS['pseudocode'].objectives = ["Learn standard assignment and control flow notation", "Understand language-independent algorithm expression", "Analyze linear search and factorial pseudocode"];
+    TOPICS['pseudocode'].takeaways = ["Use ← for assignment (x ← 5)", "Loops use do/end structure", "Pseudocode bridges human thought and computer logic"];
+    TOPICS['pseudocode'].checkpoint = {
+      questions: [
+        { q: "What is the standard pseudocode symbol for assignment?", opts: ["=", "==", "←", ":="], ans: 2 },
+        { q: "In standard conventions, array indices usually start at:", opts: ["0", "1", "-1", "Depends on language"], ans: 1 }
+      ]
+    };
+
+    // ============================================================
+    // STATE HELPERS
+    // ============================================================
+    let currentTopic = null;
+    let openModules = new Set(['m1']);
+    let openSections = new Set([0]);
+    let visitedTopics = new Set();
+
+    // ============================================================
+    // SIDEBAR CONTROLS
+    // ============================================================
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('sidebarOverlay');
+      sidebar.classList.toggle('mobile-open');
+      overlay.classList.toggle('show');
+    }
+    function closeSidebar() {
+      document.getElementById('sidebar').classList.remove('mobile-open');
+      document.getElementById('sidebarOverlay').classList.remove('show');
+    }
+    function toggleModule(id) {
+      const el = document.getElementById(id);
+      const arrow = document.getElementById('arrow-' + id);
+      const btn = arrow.closest('.sidebar-module-btn');
+      const isOpen = el.classList.toggle('open');
+      arrow.classList.toggle('open', isOpen);
+      btn.classList.toggle('active', isOpen);
+      if (isOpen) openModules.add(id); else openModules.delete(id);
+    }
+
+    // ============================================================
+    // NAVIGATION
+    // ============================================================
+    function showHome() {
+      currentTopic = null;
+      document.querySelectorAll('.sidebar-topic').forEach(el => el.classList.remove('active'));
+      renderHome();
+      scrollToTop();
+      closeSidebar();
+    }
+
+    function showTopic(id) {
+      if (!state.reviewMode && !state.completedTopics.includes(id) && id !== state.currentTopicId) {
+        const targetIdx = PATH.indexOf(id);
+        const currentIdx = PATH.indexOf(state.currentTopicId);
+        if (targetIdx > currentIdx && targetIdx !== -1) {
+          showToast("🔒 Complete previous lessons to unlock this one!");
+          return;
+        }
+      }
+
+      currentTopic = id;
+      state.currentTopicId = id;
+      saveState();
+
+      document.querySelectorAll('.sidebar-topic').forEach(el => el.classList.remove('active'));
+      const sidebarItem = document.querySelector(`[onclick="showTopic('${id}')"]`);
+      if (sidebarItem) {
+        sidebarItem.classList.add('active');
+        // Ensure parent module is open
+        for (const [mid, mod] of Object.entries(MODULES)) {
+          if (mod.topics.includes(id)) {
+            const el = document.getElementById(mid);
+            if (el && !el.classList.contains('open')) toggleModule(mid);
+            break;
+          }
+        }
+      }
+
+      openSections = new Set([0]);
+      renderTopic(id);
+      scrollToTop();
+      closeSidebar();
+      updateSidebarLocks();
+    }
+
+    function updateSidebarLocks() {
+      document.querySelectorAll('.sidebar-topic').forEach(el => {
+        const clickAttr = el.getAttribute('onclick');
+        if (!clickAttr) return;
+        const match = clickAttr.match(/'([^']+)'/);
+        if (!match) return;
+        const tid = match[1];
+
+        if (PATH.includes(tid)) {
+          const isCompleted = state.completedTopics.includes(tid);
+          const curIdx = PATH.indexOf(tid);
+          const stateIdx = PATH.indexOf(state.currentTopicId);
+          const isLocked = !state.reviewMode && !isCompleted && tid !== state.currentTopicId && curIdx > stateIdx;
+
+          el.classList.toggle('locked', isLocked);
+          const icon = isCompleted ? '<span class="status-icon check">✓</span>' : (isLocked ? '<span class="status-icon lock">🔒</span>' : '<span class="status-icon">○</span>');
+
+          const existing = el.querySelector('.status-icon');
+          if (existing) existing.remove();
+          el.insertAdjacentHTML('afterbegin', icon);
+        }
+      });
+    }
+
+
+    function scrollToTop() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // ============================================================
+    // SEARCH
+    // ============================================================
+    function handleSearch(val) {
+      if (!val.trim()) return;
+      const v = val.toLowerCase();
+      const results = Object.entries(TOPICS).filter(([id, t]) =>
+        t.title.toLowerCase().includes(v) ||
+        (t.subtitle && t.subtitle.toLowerCase().includes(v)) ||
+        id.includes(v)
+      );
+      if (results.length > 0) {
+        showTopic(results[0][0]);
+        showToast(`Showing: "${results[0][1].title}"`);
+      }
+    }
+
+    // ============================================================
+    // TOAST
+    // ============================================================
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2500);
+    }
+
+    // ============================================================
+    // SECTION TOGGLE
+    // ============================================================
+    function toggleSection(idx) {
+      const content = document.getElementById(`sec-${idx}`);
+      const arrow = document.getElementById(`sarrow-${idx}`);
+      const isOpen = content.classList.toggle('open');
+      arrow.classList.toggle('open', isOpen);
+      if (isOpen) openSections.add(idx); else openSections.delete(idx);
+    }
+
+    // ============================================================
+    // COPY CODE
+    // ============================================================
+    function copyCode(btn) {
+      const pre = btn.closest('.code-block-wrap').querySelector('pre code');
+      navigator.clipboard.writeText(pre.textContent).then(() => {
+        btn.textContent = '✓ Copied';
+        setTimeout(() => btn.textContent = 'Copy', 2000);
+      });
+    }
+
+    // ============================================================
+    // RENDER: HOME
+    // ============================================================
+    function renderHome() {
+      loadState();
+      const totalTopics = PATH.length;
+      const completedCount = state.completedTopics.length;
+      const pct = Math.round((completedCount / totalTopics) * 100);
+      const currentTopicData = TOPICS[state.currentTopicId];
+
+      let html = `
+    <!-- Settings Bar -->
+    <div class="settings-bar">
+      <div class="toggle-switch ${state.reviewMode ? 'toggle-active' : ''}" onclick="toggleReviewMode()">
+        <div class="switch"></div>
+        <span>Review Mode (Free Navigation)</span>
+      </div>
+      <div style="flex:1"></div>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span title="Daily Streak">🔥 ${state.streak} Day Streak</span>
+      </div>
+    </div>
+
+    <!-- Celebration Overlay -->
+    <div class="celebration" id="celebrationOverlay">
+      <div class="celebration-content">
+        <div class="celebration-icon">🎉</div>
+        <h2 class="celebration-title">Lesson Complete!</h2>
+        <p style="color:var(--text2);margin-bottom:24px;">You're making great progress in AlgoVerse.</p>
+        <button class="btn-primary" onclick="hideCelebration()">Continue to Next Lesson</button>
+      </div>
+    </div>
+
+    ${completedCount > 0 && completedCount < totalTopics ? `
+    <div class="home-continue-card fade-in-up">
+      <div class="home-continue-info">
+        <div class="home-continue-label">Continue your journey</div>
+        <h2 class="home-continue-title">${currentTopicData.title}</h2>
+        <div class="progress-bar-wrap" style="max-width:300px;margin-bottom:8px;"><div class="progress-bar" style="width:${pct}%"></div></div>
+        <div style="font-size:12px;color:var(--text3)">${pct}% of course completed</div>
+      </div>
+      <button class="btn-primary" onclick="showTopic('${state.currentTopicId}')">Resume Learning →</button>
+    </div>
+    ` : (completedCount === totalTopics ? `
+    <div class="home-continue-card fade-in-up" style="border-color:var(--green)">
+      <div class="home-continue-info">
+        <div class="home-continue-label" style="color:var(--green)">Course Completed!</div>
+        <h2 class="home-continue-title">Master of Algorithms</h2>
+        <p style="color:var(--text2);font-size:14px;">Congratulations! You've finished all lessons in AlgoVerse.</p>
+      </div>
+      <button class="btn-primary" style="background:var(--green)" onclick="state.reviewMode=true;showTopic('${PATH[0]}')">Review Course</button>
+    </div>
+    ` : `
+    <div class="hero">
+      <div class="hero-tag fade-in-up">
+        <span class="hero-tag-dot"></span>
+        Analysis & Design of Algorithms
+      </div>
+      <h1 class="hero-title fade-in-up delay-1">
+        Master Algorithms<br>with <span>Clarity & Depth</span>
+      </h1>
+      <p class="hero-sub fade-in-up delay-2">
+        A structured, guided learning path through Data Structures and Algorithms. Master every concept through interactive lessons, dry runs, and checkpoints.
+      </p>
+      <div class="hero-cta fade-in-up delay-3">
+        <button class="btn-primary" onclick="showTopic('${PATH[0]}')">Start Learning Path →</button>
+        <button class="btn-secondary" onclick="showTopic('complexity-cheatsheet')">📋 Cheatsheet</button>
+      </div>
+    </div>`)}
+
+    ${completedCount > 0 ? `
+    <div style="padding:0 48px 0;max-width:800px;margin-top:40px;">
+      <div class="progress-section">
+        <div class="progress-title">📈 Overall Course Progress</div>
+        <div class="progress-bar-wrap"><div class="progress-bar" style="width:${pct}%"></div></div>
+        <div class="progress-stats"><span>${completedCount} of ${totalTopics} lessons completed</span><span>${pct}%</span></div>
+      </div>
+    </div>` : ''}
+
+    <div style="padding:40px 48px 16px;">
+      <div class="section-header">
+        <div class="section-eyebrow">Course Curriculum</div>
+        <h2 class="section-title">Structured Learning</h2>
+        <p class="section-sub">Follow our optimized path or jump between modules in Review Mode.</p>
+      </div>
+    </div>
+    <div class="modules-grid">
+      ${Object.entries(MODULES).map(([id, mod]) => {
+        const modTopics = mod.topics;
+        const modCompleted = modTopics.filter(t => state.completedTopics.includes(t)).length;
+        const modPct = Math.round((modCompleted / modTopics.length) * 100);
+        return `
+        <div class="module-card" onclick="showTopic('${modTopics[0]}')">
+          <div class="module-card-num">${id.toUpperCase()} • ${modPct}% COMPLETE</div>
+          <div style="width:44px;height:44px;border-radius:10px;background:rgba(${hexToRgb(mod.color)},0.15);border:1px solid rgba(${hexToRgb(mod.color)},0.3);display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:16px;">${mod.icon}</div>
+          <div class="module-card-title">${mod.title}</div>
+          <div class="module-card-desc">${mod.desc}</div>
+          <div class="progress-bar-wrap" style="height:4px;margin-bottom:12px;"><div class="progress-bar" style="width:${modPct}%;background:${mod.color}"></div></div>
+          <div class="module-card-topics">
+            ${modTopics.slice(0, 3).map(t => TOPICS[t] ? `<span class="topic-chip">${TOPICS[t].title}</span>` : '').join('')}
+            <span class="topic-chip">+${modTopics.length - 3} more</span>
+          </div>
+        </div>
+      `}).join('')}
+    </div>
+  `;
+      document.getElementById('page-content').innerHTML = html;
+    }
+
+    function toggleReviewMode() {
+      state.reviewMode = !state.reviewMode;
+      saveState();
+      renderHome();
+      updateSidebarLocks();
+      showToast(state.reviewMode ? "🔓 Review Mode Enabled: All topics unlocked." : "🔒 Guided Mode Enabled: Re-follow the learning path.");
+    }
+
+
+    function hexToRgb(hex) {
+      const r = parseInt(hex.slice(1, 3), 16);
+      const g = parseInt(hex.slice(3, 5), 16);
+      const b = parseInt(hex.slice(5, 7), 16);
+      return `${r},${g},${b}`;
+    }
+
+    // ============================================================
+    // RENDER: TOPIC
+    // ============================================================
+    function renderTopic(id) {
+      const topic = TOPICS[id];
+      if (!topic) { showHome(); return; }
+
+      const curIdx = PATH.indexOf(id);
+      const totalCount = PATH.length;
+      const isCompleted = state.completedTopics.includes(id);
+
+      let html = `
+    <div class="content-area topic-page fade-in-up">
+      <div class="topic-hero">
+        <div class="topic-breadcrumb">
+          <a onclick="showHome()">AlgoVerse</a>
+          <span class="sep">›</span>
+          <a>Module ${id.startsWith('algo') || id === 'pseudocode' || id.includes('complexity') || id.includes('sort') && !id.includes('merge') && !id.includes('quick') ? '1' : id.includes('dc') || id.includes('search') || id.includes('merge') || id.includes('quick') || id.includes('max') ? '2' : id.includes('greedy') || id.includes('dijkstra') || id.includes('loading') || id.includes('knapsack') && !id.includes('01') ? '3' : '4'}</a>
+          <span class="sep">›</span>
+          <span style="color:var(--text2)">Lesson ${curIdx + 1} of ${totalCount}</span>
+        </div>
+        <h1 class="topic-title">${topic.title}</h1>
+        <p class="topic-subtitle">${topic.subtitle || ''}</p>
+        <div class="topic-meta">
+          <span class="meta-badge time">⏱ Time: ${topic.time}</span>
+          <span class="meta-badge space">💾 Space: ${topic.space}</span>
+          <span class="meta-badge type">🏷 ${topic.type}</span>
+        </div>
+      </div>
+
+      <!-- LEARNING OBJECTIVES -->
+      ${topic.objectives ? `
+      <div class="learning-objectives">
+        <div class="learning-objectives-title"><span>🎯</span> Learning Objectives</div>
+        <ul>
+          ${topic.objectives.map(obj => `<li>${obj}</li>`).join('')}
+        </ul>
+      </div>
+      ` : ''}
+  `;
+
+      // Content
+      if (topic.isQuiz) {
+        html += renderQuizPage();
+      } else if (topic.isProblems) {
+        html += renderProblemsPage();
+      } else {
+        html += `<div class="content-sections">`;
+        topic.sections.forEach((sec, idx) => {
+          const isOpen = openSections.has(idx);
+          html += renderSection(sec, idx, isOpen);
+        });
+
+        // Visualizer placeholder
+        html += `
+      <div class="content-section">
+        <div class="section-toggle" onclick="toggleSection('viz')">
+          <div class="section-toggle-left">
+            <div class="section-toggle-icon" style="background:rgba(6,182,212,0.15)">🎬</div>
+            <span class="section-toggle-title">Algorithm Visualizer</span>
+          </div>
+          <span class="section-toggle-arrow" id="sarrow-viz">▶</span>
+        </div>
+        <div class="section-content" id="sec-viz">
+          <div class="viz-placeholder">
+            <div class="viz-placeholder-icon">🎬</div>
+            <div class="viz-placeholder-title">Interactive Visualizer — Coming Soon</div>
+            <button class="viz-placeholder-btn">🔔 Notify me when ready</button>
+          </div>
+        </div>
+      </div>
+    `;
+
+        html += `</div>`;
+
+        // KEY TAKEAWAYS
+        if (topic.takeaways) {
+          html += `
+        <div class="takeaways-box">
+          <div class="takeaways-title">🧠 Key Takeaways</div>
+          ${topic.takeaways.map(t => `<div class="takeaway-item"><span class="takeaway-icon">✓</span><span>${t}</span></div>`).join('')}
+        </div>
+      `;
+        }
+
+        // CHECKPOINT QUIZ
+        if (topic.checkpoint) {
+          html += `
+        <div class="checkpoint-card" id="checkpoint-area">
+          <div class="checkpoint-header">
+            <span class="checkpoint-badge">Knowledge Check</span>
+            <h3 class="checkpoint-title">Ready to unlock the next lesson?</h3>
+            <p style="color:var(--text2);font-size:14px;margin-top:8px;">Answer these correctly to proceed.</p>
+          </div>
+          <div id="checkpoint-questions">
+            ${topic.checkpoint.questions.map((q, qi) => `
+              <div style="margin-bottom:24px;">
+                <p style="font-weight:700;margin-bottom:12px;color:var(--text)">${qi + 1}. ${q.q}</p>
+                <div style="display:flex;flex-direction:column;gap:8px;">
+                  ${q.opts.map((opt, oi) => `
+                    <button class="quiz-opt" onclick="checkCheckpoint(${qi}, ${oi}, ${q.ans})" id="chk-${qi}-${oi}">${opt}</button>
+                  `).join('')}
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+        }
+
+        // NEXT LESSON ACTION BAR
+        const nextId = curIdx < PATH.length - 1 ? PATH[curIdx + 1] : null;
+        html += `
+      <div class="next-action-bar">
+        <div class="lesson-status ${isCompleted ? 'status-unlocked' : 'status-locked'}">
+          ${isCompleted ? '✅ Lesson Mastery Achieved' : '🔒 Complete Checkpoint to Unlock'}
+        </div>
+        <button class="btn-primary" id="next-lesson-btn" ${!isCompleted && !state.reviewMode ? 'disabled style="opacity:0.5;cursor:not-allowed"' : ''}
+          onclick="showTopic('${nextId || 'quiz'}')">
+          ${nextId ? `Next: ${TOPICS[nextId].title} →` : 'Finish Course 🎉'}
+        </button>
+      </div>
+    `;
+      }
+
+      html += `</div>`;
+      document.getElementById('page-content').innerHTML = html;
+      if (window.Prism) setTimeout(() => Prism.highlightAll(), 100);
+    }
+
+    // ============================================================
+    // QUIZ ENGINE LOGIC
+    // ============================================================
+    let checkpointState = {};
+
+    function checkCheckpoint(qi, oi, ans) {
+      const btn = document.getElementById(`chk-${qi}-${oi}`);
+      if (!btn) return;
+
+      const allOpts = btn.parentElement.querySelectorAll('.quiz-opt');
+
+      if (oi === ans) {
+        btn.classList.add('correct');
+        allOpts.forEach(opt => opt.disabled = true);
+        checkpointState[qi] = true;
+        checkTopicUnlocked();
+      } else {
+        btn.classList.add('wrong');
+        setTimeout(() => btn.classList.remove('wrong'), 800);
+      }
+    }
+
+    function checkTopicUnlocked() {
+      const topic = TOPICS[currentTopic];
+      if (!topic || !topic.checkpoint) return;
+
+      const required = topic.checkpoint.questions.length;
+      const answered = Object.keys(checkpointState).length;
+
+      if (answered === required) {
+        if (!state.completedTopics.includes(currentTopic)) {
+          state.completedTopics.push(currentTopic);
+          // Determine new currentTopicId
+          const curIdx = PATH.indexOf(currentTopic);
+          if (curIdx < PATH.length - 1) {
+            state.currentTopicId = PATH[curIdx + 1];
+          }
+          saveState();
+          showCelebration();
+        }
+        // Update UI immediately
+        const nextBtn = document.getElementById('next-lesson-btn');
+        if (nextBtn) {
+          nextBtn.disabled = false;
+          nextBtn.style.opacity = "1";
+          nextBtn.style.cursor = "pointer";
+        }
+        const status = document.querySelector('.lesson-status');
+        if (status) {
+          status.classList.remove('status-locked');
+          status.classList.add('status-unlocked');
+          status.textContent = '✅ Lesson Mastery Achieved';
+        }
+        updateSidebarLocks();
+      }
+    }
+
+    function showCelebration() {
+      const overlay = document.getElementById('celebrationOverlay');
+      if (overlay) overlay.style.display = 'flex';
+    }
+    function hideCelebration() {
+      const overlay = document.getElementById('celebrationOverlay');
+      if (overlay) overlay.style.display = 'none';
+      const nextBtn = document.getElementById('next-lesson-btn');
+      if (nextBtn) nextBtn.click();
+    }
+
+    function renderSection(sec, idx, isOpen) {
+      const iconBg = sec.color ? `rgba(${hexToRgb(sec.color)},0.15)` : 'rgba(59,130,246,0.15)';
+      const iconBorder = sec.color ? `rgba(${hexToRgb(sec.color)},0.3)` : 'rgba(59,130,246,0.3)';
+
+      let inner = '';
+      if (sec.content) inner += `<p>${sec.content}</p>`;
+      if (sec.code) {
+        inner += `
+      <div class="code-block-wrap">
+        <div class="code-block-header">
+          <span class="code-lang">Pseudocode</span>
+          <button class="code-copy" onclick="copyCode(this)">Copy</button>
+        </div>
+        <pre><code class="language-python">${escapeHtml(sec.code)}</code></pre>
+      </div>
+    `;
+      }
+      if (sec.table) {
+        inner += `
+      <table class="complexity-table">
+        <thead><tr>${sec.table.headers.map(h => `<th>${h}</th>`).join('')}</tr></thead>
+        <tbody>${sec.table.rows.map(row => `<tr>${row.map(cell => `<td>${cell}</td>`).join('')}</tr>`).join('')}</tbody>
+      </table>
+    `;
+      }
+      if (sec.dryrun) {
+        inner += `<div class="dryrun-steps">`;
+        sec.dryrun.forEach((step, i) => {
+          inner += `
+        <div class="dryrun-step">
+          <div class="step-num">${i + 1}</div>
+          <div class="step-content">
+            <div class="step-label">${step.label}</div>
+            <div class="step-arr">${step.arr}</div>
+            <div class="step-desc">${step.desc}</div>
+          </div>
+        </div>
+      `;
+        });
+        inner += `</div>`;
+      }
+      if (sec.useCases) {
+        inner += `<div style="margin-top:12px"><div style="font-size:12px;font-weight:700;color:var(--green);margin-bottom:8px;letter-spacing:1px;text-transform:uppercase;">✅ Use When</div><div class="use-cases">${sec.useCases.map(u => `<span class="use-case">✓ ${u}</span>`).join('')}</div></div>`;
+      }
+      if (sec.notCases) {
+        inner += `<div style="margin-top:12px"><div style="font-size:12px;font-weight:700;color:#f87171;margin-bottom:8px;letter-spacing:1px;text-transform:uppercase;">❌ Avoid When</div><div class="use-cases">${sec.notCases.map(u => `<span class="not-use-case">✗ ${u}</span>`).join('')}</div></div>`;
+      }
+
+      return `
+    <div class="content-section">
+      <div class="section-toggle" onclick="toggleSection(${idx})">
+        <div class="section-toggle-left">
+          <div class="section-toggle-icon" style="background:${iconBg};border:1px solid ${iconBorder}">${sec.icon}</div>
+          <span class="section-toggle-title">${sec.title}</span>
+        </div>
+        <span class="section-toggle-arrow ${isOpen ? 'open' : ''}" id="sarrow-${idx}">▶</span>
+      </div>
+      <div class="section-content ${isOpen ? 'open' : ''}" id="sec-${idx}">
+        ${inner}
+      </div>
+    </div>
+  `;
+    }
+
+    function renderQuizPage() {
+      const questions = [
+        { q: "What is the time complexity of Binary Search?", opts: ["O(n)", "O(log n)", "O(n log n)", "O(1)"], ans: 1 },
+        { q: "Which sorting algorithm has guaranteed O(n log n) in all cases?", opts: ["Quick Sort", "Insertion Sort", "Merge Sort", "Bubble Sort"], ans: 2 },
+        { q: "Greedy algorithm works correctly for which Knapsack variant?", opts: ["0/1 Knapsack", "Fractional Knapsack", "Both", "Neither"], ans: 1 },
+        { q: "What does O(1) space complexity mean?", opts: ["Uses no memory", "Uses constant extra memory", "Uses n memory", "Uses log n memory"], ans: 1 },
+        { q: "Dijkstra's algorithm fails with:", opts: ["Weighted graphs", "Negative edge weights", "Dense graphs", "Cyclic graphs"], ans: 1 },
+        { q: "TSP is classified as:", opts: ["P problem", "NP-Complete", "O(n²) solvable", "Always greedy"], ans: 1 },
+      ];
+
+      let html = `<div class="quiz-placeholder">
+    <div class="quiz-placeholder-title">🧪 Interactive Quiz</div>
+    <div class="quiz-placeholder-sub">Test your DAA knowledge with these questions</div>
+  </div>
+  <div id="quiz-container" class="content-sections">`;
+
+      questions.forEach((q, qi) => {
+        html += `
+      <div class="content-section" style="overflow:visible">
+        <div style="padding:20px 24px">
+          <div style="font-size:11px;font-weight:700;color:var(--accent);letter-spacing:1px;margin-bottom:8px">Q${qi + 1}</div>
+          <div style="font-weight:600;font-size:15px;color:var(--text);margin-bottom:16px">${q.q}</div>
+          <div style="display:flex;flex-direction:column;gap:10px" id="opts-${qi}">
+            ${q.opts.map((opt, oi) => `
+              <button onclick="checkAnswer(${qi},${oi},${q.ans})" id="opt-${qi}-${oi}"
+                style="background:var(--bg2);border:1px solid var(--border);color:var(--text2);
+                padding:10px 16px;border-radius:8px;text-align:left;cursor:pointer;
+                font-family:var(--font-body);font-size:13px;transition:all 0.15s;"
+                onmouseover="if(!this.disabled)this.style.borderColor='var(--accent)'"
+                onmouseout="if(!this.disabled)this.style.borderColor='var(--border)'">
+                <span style="font-family:var(--font-mono);color:var(--accent);margin-right:10px">${String.fromCharCode(65 + oi)}.</span>${opt}
+              </button>
+            `).join('')}
+          </div>
+          <div id="feedback-${qi}" style="margin-top:12px;font-size:13px;font-weight:600;display:none;"></div>
+        </div>
+      </div>
+    `;
+      });
+
+      html += `</div>`;
+      return html;
+    }
+
+    function checkAnswer(qi, selected, correct) {
+      const opts = document.querySelectorAll(`[id^="opt-${qi}-"]`);
+      opts.forEach(btn => btn.disabled = true);
+
+      const feedback = document.getElementById(`feedback-${qi}`);
+      const selBtn = document.getElementById(`opt-${qi}-${selected}`);
+      const corrBtn = document.getElementById(`opt-${qi}-${correct}`);
+
+      if (selected === correct) {
+        selBtn.style.background = 'rgba(16,185,129,0.15)';
+        selBtn.style.borderColor = '#10b981';
+        selBtn.style.color = '#10b981';
+        feedback.style.color = '#10b981';
+        feedback.textContent = '✓ Correct!';
+      } else {
+        selBtn.style.background = 'rgba(239,68,68,0.12)';
+        selBtn.style.borderColor = '#ef4444';
+        selBtn.style.color = '#ef4444';
+        corrBtn.style.background = 'rgba(16,185,129,0.12)';
+        corrBtn.style.borderColor = '#10b981';
+        corrBtn.style.color = '#10b981';
+        feedback.style.color = '#ef4444';
+        feedback.textContent = '✗ Incorrect. The correct answer is highlighted.';
+      }
+      feedback.style.display = 'block';
+    }
+
+    function renderProblemsPage() {
+      const problems = [
+        { title: "Two Sum", diff: "Easy", module: "M1", desc: "Given an array and target, find two numbers that sum to target. Implement in O(n) using hash map.", hint: "Hash map: for each element, check if complement exists" },
+        { title: "Sorted Array Binary Search", diff: "Easy", module: "M2", desc: "Implement binary search. Find the first and last position of target in sorted array.", hint: "Two binary searches: one for first, one for last" },
+        { title: "Merge Two Sorted Arrays", diff: "Medium", module: "M2", desc: "Merge two sorted arrays into one sorted array in O(m+n) time and O(1) extra space.", hint: "Use the merge step from Merge Sort" },
+        { title: "Activity Selection", diff: "Medium", module: "M3", desc: "Given n activities with start and end times, select maximum non-overlapping activities.", hint: "Greedy: sort by end time, always pick earliest finishing" },
+        { title: "Coin Change", diff: "Medium", module: "M4", desc: "Given coin denominations and amount, find minimum coins needed. (Note: greedy doesn't always work!)", hint: "DP: dp[i] = min coins for amount i" },
+        { title: "Longest Common Subsequence", diff: "Hard", module: "M4", desc: "Find the length of the LCS of two strings using DP.", hint: "2D DP table: dp[i][j] for first i chars of s1, first j chars of s2" },
+      ];
+
+      const colors = { Easy: '#10b981', Medium: '#f59e0b', Hard: '#ef4444' };
+
+      return `
+    <div class="practice-placeholder">
+      <div style="font-size:30px;margin-bottom:12px">💡</div>
+      <div style="font-weight:700;font-size:17px;color:var(--text);margin-bottom:8px">Practice Problems</div>
+      <div style="font-size:13px;color:var(--text2)">Curated problems for each DAA module. Hints available!</div>
+    </div>
+    <div class="content-sections">
+      ${problems.map((p, i) => `
+        <div class="content-section">
+          <div style="padding:20px 24px">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px">
+              <div style="font-weight:700;font-size:15px">${i + 1}. ${p.title}</div>
+              <div style="display:flex;gap:8px">
+                <span style="background:rgba(59,130,246,0.1);color:var(--accent2);padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600">${p.module}</span>
+                <span style="background:rgba(${p.diff === 'Easy' ? '16,185,129' : p.diff === 'Medium' ? '245,158,11' : '239,68,68'},0.12);color:${colors[p.diff]};padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600">${p.diff}</span>
+              </div>
+            </div>
+            <p style="color:var(--text2);font-size:13.5px;margin-bottom:12px">${p.desc}</p>
+            <details style="cursor:pointer">
+              <summary style="color:var(--accent2);font-size:13px;font-weight:600;user-select:none">💡 Show Hint</summary>
+              <p style="color:var(--text3);font-size:13px;margin-top:8px;padding:10px;background:var(--bg2);border-radius:8px">${p.hint}</p>
+            </details>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+    }
+
+    function escapeHtml(str) {
+      return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    // ============================================================
+    // INIT
+    // ============================================================
+    loadState();
+    if (state.completedTopics.length === 0 && state.currentTopicId === PATH[0]) {
+      renderHome();
+    } else {
+      showTopic(state.currentTopicId);
+    }
+    updateSidebarLocks();
+
+  </script>
+</body>
+
+</html>
